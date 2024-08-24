@@ -53,7 +53,7 @@ jobs:
         with:
           name: GitCloned
           path: CheckoutFolder
-#
+
 #  Dashboard-CreateProduct:
 #    needs: CloneGit
 #    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
@@ -62,7 +62,7 @@ jobs:
 #      test_name: "Dashboard-CreateProduct"
 #      test_config: "test_config/web/createProductTest.xml"
 #      branch_name: "GoSELL-Thang"
-#
+##
 #  Dashboard-UpdateProduct:
 #    needs: CloneGit
 #    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
@@ -72,18 +72,18 @@ jobs:
 #      test_config: "test_config/web/updateProductTest.xml"
 #      branch_name: "GoSELL-Thang"
 #
-#  Dashboard-ProductManagement:
+  Dashboard-ProductManagement:
 #    needs:
 #      - Dashboard-CreateProduct
 #      - Dashboard-UpdateProduct
 #
 #    if: always()
-#    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
-#    with:
-#      artifact: "GitCloned"
-#      test_name: "Dashboard-ProductManagement"
-#      test_config: "test_config/web/productManagementTest.xml"
-#      branch_name: "GoSELL-Thang"
+    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
+    with:
+      artifact: "GitCloned"
+      test_name: "Dashboard-ProductManagement"
+      test_config: "test_config/web/productManagementTest.xml"
+      branch_name: "GoSELL-Thang"
 #
 #  Storefront-ProductDetail-NormalxWithoutVariation:
 #    needs: CloneGit
@@ -155,19 +155,19 @@ jobs:
 #      test_config: "test_config/android/seller/editProductTest.xml"
 #      branch_name: "GoSELL-Thang"
 #
-#  Android-GoSELLER-ProductManagement:
+  Android-GoSELLER-ProductManagement:
 #    needs:
 #      - Android-GoSELLER-CreateProduct
 #      - Android-GoSELLER-UpdateProduct
 #    if: always()
-#    uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
-#    with:
-#      artifact: "GitCloned"
-#      appium_port: "4725"
-#      test_name: "Android-GoSELLER-ProductManagement"
-#      test_config: "test_config/android/seller/productManagementTest.xml"
-#      branch_name: "GoSELL-Thang"
-#
+    uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
+    with:
+      artifact: "GitCloned"
+      appium_port: "4725"
+      test_name: "Android-GoSELLER-ProductManagement"
+      test_config: "test_config/android/seller/productManagementTest.xml"
+      branch_name: "GoSELL-Thang"
+
 #  IOS-GoSELLER-CreateProduct:
 #    needs: CloneGit
 #    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
@@ -188,33 +188,33 @@ jobs:
 #      test_name: "IOS-GoSELLER-UpdateProduct"
 #      test_config: "test_config/iOS/seller/editProductTest.xml"
 #      branch_name: "GoSELL-Thang"
-#
-#  IOS-GoSELLER-ProductManagement:
+
+  IOS-GoSELLER-ProductManagement:
 #    needs:
 #      - IOS-GoSELLER-CreateProduct
 #      - IOS-GoSELLER-UpdateProduct
 #    if: always()
-#    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-#    with:
-#      artifact: "GitCloned"
-#      appium_port: "4728"
-#      test_name: "IOS-GoSELLER-ProductManagement"
-#      test_config: "test_config/iOS/seller/productManagementTest.xml"
-#      branch_name: "GoSELL-Thang"
-#
-#
-#  CleanJob:
-#    runs-on: ubuntu-20.04
-#    needs:
-#      - Dashboard-ProductManagement
+    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
+    with:
+      artifact: "GitCloned"
+      appium_port: "4728"
+      test_name: "IOS-GoSELLER-ProductManagement"
+      test_config: "test_config/iOS/seller/productManagementTest.xml"
+      branch_name: "GoSELL-Thang"
+
+
+  CleanJob:
+    runs-on: ubuntu-20.04
+    needs:
+      - Dashboard-ProductManagement
 #      - Storefront-ProductDetail-Promotion
-#      - Android-GoSELLER-ProductManagement
-#      - IOS-GoSELLER-ProductManagement
-#
-#    if: always()
-#    steps:
-#      - name: Delete clone repository
-#        uses: geekyeggo/delete-artifact@v5
-#        with:
-#          name: ClonedRepository
+      - Android-GoSELLER-ProductManagement
+      - IOS-GoSELLER-ProductManagement
+
+    if: always()
+    steps:
+      - name: Delete clone repository
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: ClonedRepository
 
