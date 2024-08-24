@@ -116,6 +116,7 @@ jobs:
     needs: CloneGit
     uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
     with:
+      artifact: "GitCloned"
       test_name: "Storefront-ProductDetail-IMEIxVariation"
       test_config: "test_config/web/productDetail_IMEI_Variation.xml"
       branch_name: "GoSELL-Thang"
@@ -135,72 +136,72 @@ jobs:
       test_config: "test_config/web/productDetail_combinePromotion.xml"
       branch_name: "GoSELL-Thang"
 
-#  Android-GoSELLER-CreateProduct:
-#    needs: CloneGit
-#    uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
-#    with:
-#      artifact: "GitCloned"
-#      appium_port: "4723"
-#      test_name: "Android-GoSELLER-CreateProduct"
-#      test_config: "test_config/android/seller/createProductTest.xml"
-#      branch_name: "GoSELL-Thang"
-#
-#  Android-GoSELLER-UpdateProduct:
-#    needs: CloneGit
-#    uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
-#    with:
-#      artifact: "GitCloned"
-#      appium_port: "4724"
-#      test_name: "Android-GoSELLER-UpdateProduct"
-#      test_config: "test_config/android/seller/editProductTest.xml"
-#      branch_name: "GoSELL-Thang"
-#
-#  Android-GoSELLER-ProductManagement:
-#    needs:
-#      - Android-GoSELLER-CreateProduct
-#      - Android-GoSELLER-UpdateProduct
-#    if: always()
-#    uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
-#    with:
-#      artifact: "GitCloned"
-#      appium_port: "4725"
-#      test_name: "Android-GoSELLER-ProductManagement"
-#      test_config: "test_config/android/seller/productManagementTest.xml"
-#      branch_name: "GoSELL-Thang"
-#
-#  IOS-GoSELLER-CreateProduct:
-#    needs: CloneGit
-#    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-#    with:
-#      artifact: "GitCloned"
-#      appium_port: "4726"
-#      test_name: "IOS-GoSELLER-CreateProduct"
-#      test_config: "test_config/iOS/seller/createProductTest.xml"
-#      branch_name: "GoSELL-Thang"
-#
-#  IOS-GoSELLER-UpdateProduct:
-#    needs: CloneGit
-#    if: always()
-#    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-#    with:
-#      artifact: "GitCloned"
-#      appium_port: "4727"
-#      test_name: "IOS-GoSELLER-UpdateProduct"
-#      test_config: "test_config/iOS/seller/editProductTest.xml"
-#      branch_name: "GoSELL-Thang"
-#
-#  IOS-GoSELLER-ProductManagement:
-#    needs:
-#      - IOS-GoSELLER-CreateProduct
-#      - IOS-GoSELLER-UpdateProduct
-#    if: always()
-#    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-#    with:
-#      artifact: "GitCloned"
-#      appium_port: "4723"
-#      test_name: "IOS-GoSELLER-ProductManagement"
-#      test_config: "test_config/iOS/seller/productManagementTest.xml"
-#      branch_name: "GoSELL-Thang"
+  Android-GoSELLER-CreateProduct:
+    needs: CloneGit
+    uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
+    with:
+      artifact: "GitCloned"
+      appium_port: "4723"
+      test_name: "Android-GoSELLER-CreateProduct"
+      test_config: "test_config/android/seller/createProductTest.xml"
+      branch_name: "GoSELL-Thang"
+
+  Android-GoSELLER-UpdateProduct:
+    needs: CloneGit
+    uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
+    with:
+      artifact: "GitCloned"
+      appium_port: "4724"
+      test_name: "Android-GoSELLER-UpdateProduct"
+      test_config: "test_config/android/seller/editProductTest.xml"
+      branch_name: "GoSELL-Thang"
+
+  Android-GoSELLER-ProductManagement:
+    needs:
+      - Android-GoSELLER-CreateProduct
+      - Android-GoSELLER-UpdateProduct
+    if: always()
+    uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
+    with:
+      artifact: "GitCloned"
+      appium_port: "4725"
+      test_name: "Android-GoSELLER-ProductManagement"
+      test_config: "test_config/android/seller/productManagementTest.xml"
+      branch_name: "GoSELL-Thang"
+
+  IOS-GoSELLER-CreateProduct:
+    needs: CloneGit
+    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
+    with:
+      artifact: "GitCloned"
+      appium_port: "4726"
+      test_name: "IOS-GoSELLER-CreateProduct"
+      test_config: "test_config/iOS/seller/createProductTest.xml"
+      branch_name: "GoSELL-Thang"
+
+  IOS-GoSELLER-UpdateProduct:
+    needs: CloneGit
+    if: always()
+    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
+    with:
+      artifact: "GitCloned"
+      appium_port: "4727"
+      test_name: "IOS-GoSELLER-UpdateProduct"
+      test_config: "test_config/iOS/seller/editProductTest.xml"
+      branch_name: "GoSELL-Thang"
+
+  IOS-GoSELLER-ProductManagement:
+    needs:
+      - IOS-GoSELLER-CreateProduct
+      - IOS-GoSELLER-UpdateProduct
+    if: always()
+    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
+    with:
+      artifact: "GitCloned"
+      appium_port: "4723"
+      test_name: "IOS-GoSELLER-ProductManagement"
+      test_config: "test_config/iOS/seller/productManagementTest.xml"
+      branch_name: "GoSELL-Thang"
 
 
   CleanJob:
@@ -208,8 +209,8 @@ jobs:
     needs:
       - Dashboard-ProductManagement
       - Storefront-ProductDetail-Promotion
-#      - Android-GoSELLER-ProductManagement
-#      - IOS-GoSELLER-ProductManagement
+      - Android-GoSELLER-ProductManagement
+      - IOS-GoSELLER-ProductManagement
 
     if: always()
     steps:
