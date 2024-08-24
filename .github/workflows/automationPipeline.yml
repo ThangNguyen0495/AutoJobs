@@ -184,13 +184,13 @@ jobs:
     needs: CloneGit
 #      - IOS-GoSELLER-CreateProduct
 #      - IOS-GoSELLER-UpdateProduct
-    if: always()
+#    if: always()
     uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
     with:
       appium_port: "4728"
       test_name: "IOS-GoSELLER-ProductManagement"
       test_config: "test_config/iOS/seller/productManagementTest.xml"
-#      branch_name: "GoSELL-Thang"
+      branch_name: "GoSELL-Thang"
 
 
   CleanJob:
