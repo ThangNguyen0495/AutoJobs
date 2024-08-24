@@ -24,14 +24,17 @@ jobs:
         run: |
           sudo apt update -y
           sudo apt install -y openvpn
+
       - name: Create VPN Credentials File
         run: |
-          echo "${{ secrets.VPN_USERNAME }}" > ${{ secrets.VPN_AUTHOR }}
-          echo "${{ secrets.VPN_PASSWORD }}" >> ${{ secrets.VPN_AUTHOR }}
-          chmod 600 ${{ secrets.VPN_AUTHOR }}
+          echo "${{ secrets.VPN_USERNAME }}" > $HOME/author.txt
+          echo "${{ secrets.VPN_PASSWORD }}" >> $HOME/author.txt
+          chmod 600 $HOME/author.txt
+
       - name: Start OpenVPN
         run: |
-          sudo nohup openvpn --verb 4 --config $(pwd)/${{ secrets.VPN_OVPN }} --auth-user-pass $(pwd)/${{ secrets.VPN_AUTHOR }} > $HOME/openvpn.log 2>&1 &
+          sudo nohup openvpn --verb 4 --config $(pwd)/.github/client.ovpn --auth-user-pass $HOME/author.txt > $HOME/openvpn.log 2>&1 &
+
       - name: Try connect to Gitlab by VPN
         run: |
           for i in {1..5}; do
