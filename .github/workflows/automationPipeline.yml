@@ -73,7 +73,7 @@ jobs:
 #      branch_name: "GoSELL-Thang"
 #
   Dashboard-ProductManagement:
-#    needs:
+    needs: CloneGit
 #      - Dashboard-CreateProduct
 #      - Dashboard-UpdateProduct
 #
@@ -156,7 +156,7 @@ jobs:
 #      branch_name: "GoSELL-Thang"
 #
   Android-GoSELLER-ProductManagement:
-#    needs:
+    needs: CloneGit
 #      - Android-GoSELLER-CreateProduct
 #      - Android-GoSELLER-UpdateProduct
 #    if: always()
@@ -190,7 +190,7 @@ jobs:
 #      branch_name: "GoSELL-Thang"
 
   IOS-GoSELLER-ProductManagement:
-#    needs:
+    needs: CloneGit
 #      - IOS-GoSELLER-CreateProduct
 #      - IOS-GoSELLER-UpdateProduct
 #    if: always()
