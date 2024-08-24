@@ -15,10 +15,6 @@ env:
 jobs:
   CloneGit:
     uses: ThangNguyen0495/Reusable/.github/workflows/cloneGitLabConfigs.yml@main
-    secrets:
-      vpn_username: ${{ secrets.VPN_USERNAME }}
-      vpn_password: ${{ secrets.VPN_PASSWORD }}
-      gitlab_repo: ${{ secrets.GIT_REPO }}
 #
 #  Dashboard-CreateProduct:
 #    needs: CloneGit
