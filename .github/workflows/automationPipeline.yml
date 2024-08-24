@@ -63,7 +63,7 @@ jobs:
     with:
       test_name: "Dashboard-CreateProduct"
       test_config: "test_config/web/createProductTest.xml"
-      branch_name: ${{ env.BRANCH_NAME }}
+      branch_name: "GoSELL-Thang"
 
   Dashboard-UpdateProduct:
     needs: CloneGit
@@ -71,7 +71,7 @@ jobs:
     with:
       test_name: "Dashboard-UpdateProduct"
       test_config: "test_config/web/updateProductTest.xml"
-      branch_name: ${{ env.BRANCH_NAME }}
+      branch_name: "GoSELL-Thang"
 
   Dashboard-ProductManagement:
     needs:
@@ -83,7 +83,7 @@ jobs:
     with:
       test_name: "Dashboard-ProductManagement"
       test_config: "test_config/web/productManagementTest.xml"
-      branch_name: ${{ env.BRANCH_NAME }}
+      branch_name: "GoSELL-Thang"
 
   Storefront-ProductDetail-NormalxWithoutVariation:
     needs: CloneGit
@@ -91,7 +91,7 @@ jobs:
     with:
       test_name: "Storefront-ProductDetail-NormalxWithoutVariation"
       test_config: "test_config/web/productDetail_Normal_withoutVariation.xml"
-      branch_name: ${{ env.BRANCH_NAME }}
+      branch_name: "GoSELL-Thang"
 
   Storefront-ProductDetail-IMEIxWithoutVariation:
     needs: CloneGit
@@ -99,7 +99,7 @@ jobs:
     with:
       test_name: "Storefront-ProductDetail-IMEIxWithoutVariation"
       test_config: "test_config/web/productDetail_IMEI_withoutVariation.xml"
-      branch_name: ${{ env.BRANCH_NAME }}
+      branch_name: "GoSELL-Thang"
 
   Storefront-ProductDetail-NormalxVariation:
     needs: CloneGit
@@ -107,7 +107,7 @@ jobs:
     with:
       test_name: "Storefront-ProductDetail-NormalxVariation"
       test_config: "test_config/web/productDetail_Normal_Variation.xml"
-      branch_name: ${{ env.BRANCH_NAME }}
+      branch_name: "GoSELL-Thang"
 
   Storefront-ProductDetail-IMEIxVariation:
     needs: CloneGit
@@ -115,7 +115,7 @@ jobs:
     with:
       test_name: "Storefront-ProductDetail-IMEIxVariation"
       test_config: "test_config/web/productDetail_IMEI_Variation.xml"
-      branch_name: ${{ env.BRANCH_NAME }}
+      branch_name: "GoSELL-Thang"
 
   Storefront-ProductDetail-Promotion:
     needs:
@@ -129,7 +129,7 @@ jobs:
     with:
       test_name: "Storefront-ProductDetail-Promotion"
       test_config: "test_config/web/productDetail_combinePromotion.xml"
-      branch_name: ${{ env.BRANCH_NAME }}
+      branch_name: "GoSELL-Thang"
 
   Android-GoSELLER-CreateProduct:
     needs: CloneGit
@@ -138,7 +138,7 @@ jobs:
       appium_port: 4723
       test_name: "Android-GoSELLER-CreateProduct"
       test_config: "test_config/android/seller/createProductTest.xml"
-      branch_name: ${{ env.BRANCH_NAME }}
+      branch_name: "GoSELL-Thang"
 
   Android-GoSELLER-UpdateProduct:
     needs: CloneGit
@@ -147,7 +147,7 @@ jobs:
       appium_port: 4724
       test_name: "Android-GoSELLER-UpdateProduct"
       test_config: "test_config/android/seller/editProductTest.xml"
-      branch_name: ${{ env.BRANCH_NAME }}
+      branch_name: "GoSELL-Thang"
 
   Android-GoSELLER-ProductManagement:
     needs:
@@ -159,7 +159,7 @@ jobs:
       appium_port: 4725
       test_name: "Android-GoSELLER-ProductManagement"
       test_config: "test_config/android/seller/productManagementTest.xml"
-      branch_name: ${{ env.BRANCH_NAME }}
+      branch_name: "GoSELL-Thang"
 
   IOS-GoSELLER-CreateProduct:
     needs: CloneGit
@@ -168,7 +168,7 @@ jobs:
       appium_port: 4726
       test_name: "IOS-GoSELLER-CreateProduct"
       test_config: "test_config/iOS/seller/createProductTest.xml"
-      branch_name: ${{ env.BRANCH_NAME }}
+      branch_name: "GoSELL-Thang"
 
   IOS-GoSELLER-UpdateProduct:
     needs: CloneGit
@@ -178,7 +178,7 @@ jobs:
       appium_port: 4727
       test_name: "IOS-GoSELLER-UpdateProduct"
       test_config: "test_config/iOS/seller/editProductTest.xml"
-      branch_name: ${{ env.BRANCH_NAME }}
+      branch_name: "GoSELL-Thang"
 
   IOS-GoSELLER-ProductManagement:
     needs:
@@ -190,7 +190,7 @@ jobs:
       appium_port: 4728
       test_name: "IOS-GoSELLER-ProductManagement"
       test_config: "test_config/iOS/seller/productManagementTest.xml"
-      branch_name: ${{ env.BRANCH_NAME }}
+      branch_name: "GoSELL-Thang"
 
 
   CleanJob:
