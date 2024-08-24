@@ -59,7 +59,7 @@ jobs:
   Clone-Git:
     uses: ThangNguyen0495/Reusable/.github/workflows/cloneGitLabConfigs.yml@main
     with:
-      vpn_username: ${{ secrets.VPN_USERNAME }}
-      vpn_password: ${{ secrets.VPN_PASSWORD }}
-      gitlab_host: ${{ secrets.GITLAB_HOST }}
-      gitlab_repo: ${{ secrets.GITLAB_REPOSITORY }}
+      vpn_username: "${{ secrets.VPN_USERNAME }}"
+      vpn_password: "${{ secrets.VPN_PASSWORD }}"
+      gitlab_host: "${{ secrets.GITLAB_HOST }}"
+      gitlab_repo: "${{ secrets.GITLAB_REPOSITORY }}"
