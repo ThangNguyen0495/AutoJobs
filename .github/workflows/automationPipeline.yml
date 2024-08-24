@@ -38,7 +38,7 @@ jobs:
       - name: Try connect to Gitlab by VPN
         run: |
           for i in {1..5}; do
-           echo "$(curl -Is ${{ secrets.GITLAB_REPO }} | head -1)"
+           echo "$(curl -Is ${{ secrets.GIT_REPO }} | head -1)"
            if grep -q "Initialization Sequence Completed" $HOME/openvpn.log; then
              echo "OpenVPN started successfully."
              break
@@ -48,7 +48,7 @@ jobs:
           cat $HOME/openvpn.log
 #      - name: Clone GitLab repository
 #        run: |
-#          git clone ${{ secrets.GITLAB_REPO }} GoSELL-Automation
+#          git clone ${{ secrets.GIT_REPO }} GoSELL-Automation
       - name: Stop OpenVPN
         run: |
           sudo pkill -f openvpn
