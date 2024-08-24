@@ -19,158 +19,154 @@ jobs:
       vpn_username: ${{ secrets.VPN_USERNAME }}
       vpn_password: ${{ secrets.VPN_PASSWORD }}
       gitlab_repo: ${{ secrets.GIT_REPO }}
-
-  Dashboard-CreateProduct:
-    needs: CloneGit
-    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      test_name: "Dashboard-CreateProduct"
-      test_config: "test_config/web/createProductTest.xml"
-      branch_name: $BRANCH_NAME
-
-  Dashboard-UpdateProduct:
-    needs: CloneGit
-    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      test_name: "Dashboard-UpdateProduct"
-      test_config: "test_config/web/updateProductTest.xml"
-      branch_name: $BRANCH_NAME
-
-  Dashboard-ProductManagement:
-    needs:
-      - Dashboard-CreateProduct
-      - Dashboard-UpdateProduct
-
-    if: always()
-    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      test_name: "Dashboard-ProductManagement"
-      test_config: "test_config/web/productManagementTest.xml"
-      branch_name: $BRANCH_NAME
-
-  Storefront-ProductDetail-NormalxWithoutVariation:
-    needs: CloneGit
-    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      test_name: "Storefront-ProductDetail-NormalxWithoutVariation"
-      test_config: "test_config/web/productDetail_Normal_withoutVariation.xml"
-      branch_name: $BRANCH_NAME
-
-  Storefront-ProductDetail-IMEIxWithoutVariation:
-    needs: CloneGit
-    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      test_name: "Storefront-ProductDetail-IMEIxWithoutVariation"
-      test_config: "test_config/web/productDetail_IMEI_withoutVariation.xml"
-      branch_name: $BRANCH_NAME
-
-  Storefront-ProductDetail-NormalxVariation:
-    needs: CloneGit
-    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      test_name: "Storefront-ProductDetail-NormalxVariation"
-      test_config: "test_config/web/productDetail_Normal_Variation.xml"
-      branch_name: $BRANCH_NAME
-
-  Storefront-ProductDetail-IMEIxVariation:
-    needs: CloneGit
-    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      test_name: "Storefront-ProductDetail-IMEIxVariation"
-      test_config: "test_config/web/productDetail_IMEI_Variation.xml"
-      branch_name: $BRANCH_NAME
-
-  Storefront-ProductDetail-Promotion:
-    needs:
-      - CloneGit
-      - Storefront-ProductDetail-NormalxWithoutVariation
-      - Storefront-ProductDetail-IMEIxWithoutVariation
-      - Storefront-ProductDetail-NormalxVariation
-      - Storefront-ProductDetail-IMEIxVariation
-
-    if: always()
-    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      test_name: "Storefront-ProductDetail-Promotion"
-      test_config: "test_config/web/productDetail_combinePromotion.xml"
-      branch_name: $BRANCH_NAME
-
-  Android-GoSELLER-CreateProduct:
-    needs: CloneGit
-    uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
-    with:
-      appium_port: 4723
-      test_name: "Android-GoSELLER-CreateProduct"
-      test_config: "test_config/android/seller/createProductTest.xml"
-      branch_name: $BRANCH_NAME
-
-  Android-GoSELLER-UpdateProduct:
-    needs: CloneGit
-    uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
-    with:
-      appium_port: 4724
-      test_name: "Android-GoSELLER-UpdateProduct"
-      test_config: "test_config/android/seller/editProductTest.xml"
-      branch_name: $BRANCH_NAME
-
-  Android-GoSELLER-ProductManagement:
-    needs:
-      - CloneGit
-      - Android-GoSELLER-CreateProduct
-      - Android-GoSELLER-UpdateProduct
-    if: always()
-    uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
-    with:
-      appium_port: 4725
-      test_name: "Android-GoSELLER-ProductManagement"
-      test_config: "test_config/android/seller/productManagementTest.xml"
-      branch_name: $BRANCH_NAME
-
-  IOS-GoSELLER-CreateProduct:
-    needs: CloneGit
-    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-    with:
-      appium_port: 4726
-      test_name: "IOS-GoSELLER-CreateProduct"
-      test_config: "test_config/iOS/seller/createProductTest.xml"
-      branch_name: $BRANCH_NAME
-
-  IOS-GoSELLER-UpdateProduct:
-    needs: CloneGit
-    if: always()
-    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-    with:
-      appium_port: 4727
-      test_name: "IOS-GoSELLER-UpdateProduct"
-      test_config: "test_config/iOS/seller/editProductTest.xml"
-      branch_name: $BRANCH_NAME
-
-  IOS-GoSELLER-ProductManagement:
-    needs:
-      - CloneGit
-      - IOS-GoSELLER-CreateProduct
-      - IOS-GoSELLER-UpdateProduct
-    if: always()
-    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-    with:
-      appium_port: 4728
-      test_name: "IOS-GoSELLER-ProductManagement"
-      test_config: "test_config/iOS/seller/productManagementTest.xml"
-      branch_name: $BRANCH_NAME
-
-
-  CleanJob:
-    runs-on: ubuntu-20.04
-    needs:
-      - CloneGit
-      - Dashboard-ProductManagement
-      - Storefront-ProductDetail-Promotion
-      - Android-GoSELLER-ProductManagement
-      - IOS-GoSELLER-ProductManagement
-
-    if: always()
-    steps:
-      - name: Delete clone repository
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: ClonedRepository
+#
+#  Dashboard-CreateProduct:
+#    needs: CloneGit
+#    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
+#    with:
+#      test_name: "Dashboard-CreateProduct"
+#      test_config: "test_config/web/createProductTest.xml"
+#      branch_name: $BRANCH_NAME
+#
+#  Dashboard-UpdateProduct:
+#    needs: CloneGit
+#    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
+#    with:
+#      test_name: "Dashboard-UpdateProduct"
+#      test_config: "test_config/web/updateProductTest.xml"
+#      branch_name: $BRANCH_NAME
+#
+#  Dashboard-ProductManagement:
+#    needs:
+#      - Dashboard-CreateProduct
+#      - Dashboard-UpdateProduct
+#
+#    if: always()
+#    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
+#    with:
+#      test_name: "Dashboard-ProductManagement"
+#      test_config: "test_config/web/productManagementTest.xml"
+#      branch_name: $BRANCH_NAME
+#
+#  Storefront-ProductDetail-NormalxWithoutVariation:
+#    needs: CloneGit
+#    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
+#    with:
+#      test_name: "Storefront-ProductDetail-NormalxWithoutVariation"
+#      test_config: "test_config/web/productDetail_Normal_withoutVariation.xml"
+#      branch_name: $BRANCH_NAME
+#
+#  Storefront-ProductDetail-IMEIxWithoutVariation:
+#    needs: CloneGit
+#    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
+#    with:
+#      test_name: "Storefront-ProductDetail-IMEIxWithoutVariation"
+#      test_config: "test_config/web/productDetail_IMEI_withoutVariation.xml"
+#      branch_name: $BRANCH_NAME
+#
+#  Storefront-ProductDetail-NormalxVariation:
+#    needs: CloneGit
+#    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
+#    with:
+#      test_name: "Storefront-ProductDetail-NormalxVariation"
+#      test_config: "test_config/web/productDetail_Normal_Variation.xml"
+#      branch_name: $BRANCH_NAME
+#
+#  Storefront-ProductDetail-IMEIxVariation:
+#    needs: CloneGit
+#    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
+#    with:
+#      test_name: "Storefront-ProductDetail-IMEIxVariation"
+#      test_config: "test_config/web/productDetail_IMEI_Variation.xml"
+#      branch_name: $BRANCH_NAME
+#
+#  Storefront-ProductDetail-Promotion:
+#    needs:
+#      - Storefront-ProductDetail-NormalxWithoutVariation
+#      - Storefront-ProductDetail-IMEIxWithoutVariation
+#      - Storefront-ProductDetail-NormalxVariation
+#      - Storefront-ProductDetail-IMEIxVariation
+#
+#    if: always()
+#    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
+#    with:
+#      test_name: "Storefront-ProductDetail-Promotion"
+#      test_config: "test_config/web/productDetail_combinePromotion.xml"
+#      branch_name: $BRANCH_NAME
+#
+#  Android-GoSELLER-CreateProduct:
+#    needs: CloneGit
+#    uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
+#    with:
+#      appium_port: 4723
+#      test_name: "Android-GoSELLER-CreateProduct"
+#      test_config: "test_config/android/seller/createProductTest.xml"
+#      branch_name: $BRANCH_NAME
+#
+#  Android-GoSELLER-UpdateProduct:
+#    needs: CloneGit
+#    uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
+#    with:
+#      appium_port: 4724
+#      test_name: "Android-GoSELLER-UpdateProduct"
+#      test_config: "test_config/android/seller/editProductTest.xml"
+#      branch_name: $BRANCH_NAME
+#
+#  Android-GoSELLER-ProductManagement:
+#    needs:
+#      - Android-GoSELLER-CreateProduct
+#      - Android-GoSELLER-UpdateProduct
+#    if: always()
+#    uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
+#    with:
+#      appium_port: 4725
+#      test_name: "Android-GoSELLER-ProductManagement"
+#      test_config: "test_config/android/seller/productManagementTest.xml"
+#      branch_name: $BRANCH_NAME
+#
+#  IOS-GoSELLER-CreateProduct:
+#    needs: CloneGit
+#    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
+#    with:
+#      appium_port: 4726
+#      test_name: "IOS-GoSELLER-CreateProduct"
+#      test_config: "test_config/iOS/seller/createProductTest.xml"
+#      branch_name: $BRANCH_NAME
+#
+#  IOS-GoSELLER-UpdateProduct:
+#    needs: CloneGit
+#    if: always()
+#    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
+#    with:
+#      appium_port: 4727
+#      test_name: "IOS-GoSELLER-UpdateProduct"
+#      test_config: "test_config/iOS/seller/editProductTest.xml"
+#      branch_name: $BRANCH_NAME
+#
+#  IOS-GoSELLER-ProductManagement:
+#    needs:
+#      - IOS-GoSELLER-CreateProduct
+#      - IOS-GoSELLER-UpdateProduct
+#    if: always()
+#    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
+#    with:
+#      appium_port: 4728
+#      test_name: "IOS-GoSELLER-ProductManagement"
+#      test_config: "test_config/iOS/seller/productManagementTest.xml"
+#      branch_name: $BRANCH_NAME
+#
+#
+#  CleanJob:
+#    runs-on: ubuntu-20.04
+#    needs:
+#      - Dashboard-ProductManagement
+#      - Storefront-ProductDetail-Promotion
+#      - Android-GoSELLER-ProductManagement
+#      - IOS-GoSELLER-ProductManagement
+#
+#    if: always()
+#    steps:
+#      - name: Delete clone repository
+#        uses: geekyeggo/delete-artifact@v5
+#        with:
+#          name: ClonedRepository
