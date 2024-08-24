@@ -39,13 +39,13 @@ jobs:
         run: |
           for i in {1..5}; do
            echo "$(curl -Is ${{ secrets.GIT_REPO }} | head -1)"
+           cat $HOME/openvpn.log
            if grep -q "Initialization Sequence Completed" $HOME/openvpn.log; then
              echo "OpenVPN started successfully."
              break
            fi
            echo "OpenVPN start failed, retrying..."
           done
-          cat $HOME/openvpn.log
       - name: Clone GitLab repository
         run: |
           git clone ${{ secrets.GIT_REPO }} CheckoutFolder
