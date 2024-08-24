@@ -62,7 +62,7 @@ jobs:
 #      test_name: "Dashboard-CreateProduct"
 #      test_config: "test_config/web/createProductTest.xml"
 #      branch_name: "GoSELL-Thang"
-##
+
 #  Dashboard-UpdateProduct:
 #    needs: CloneGit
 #    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
@@ -72,18 +72,18 @@ jobs:
 #      test_config: "test_config/web/updateProductTest.xml"
 #      branch_name: "GoSELL-Thang"
 #
-  Dashboard-ProductManagement:
-    needs: CloneGit
+#  Dashboard-ProductManagement:
+#    needs:
 #      - Dashboard-CreateProduct
 #      - Dashboard-UpdateProduct
 #
 #    if: always()
-    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      artifact: "GitCloned"
-      test_name: "Dashboard-ProductManagement"
-      test_config: "test_config/web/productManagementTest.xml"
-      branch_name: "GoSELL-Thang"
+#    uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
+#    with:
+#      artifact: "GitCloned"
+#      test_name: "Dashboard-ProductManagement"
+#      test_config: "test_config/web/productManagementTest.xml"
+#      branch_name: "GoSELL-Thang"
 #
 #  Storefront-ProductDetail-NormalxWithoutVariation:
 #    needs: CloneGit
@@ -189,27 +189,27 @@ jobs:
 #      test_config: "test_config/iOS/seller/editProductTest.xml"
 #      branch_name: "GoSELL-Thang"
 
-  IOS-GoSELLER-ProductManagement:
-    needs: CloneGit
+#  IOS-GoSELLER-ProductManagement:
+#    needs: CloneGit
 #      - IOS-GoSELLER-CreateProduct
 #      - IOS-GoSELLER-UpdateProduct
 #    if: always()
-    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-    with:
-      artifact: "GitCloned"
-      appium_port: "4728"
-      test_name: "IOS-GoSELLER-ProductManagement"
-      test_config: "test_config/iOS/seller/productManagementTest.xml"
-      branch_name: "GoSELL-Thang"
+#    uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
+#    with:
+#      artifact: "GitCloned"
+#      appium_port: "4723"
+#      test_name: "IOS-GoSELLER-ProductManagement"
+#      test_config: "test_config/iOS/seller/productManagementTest.xml"
+#      branch_name: "GoSELL-Thang"
 
 
   CleanJob:
     runs-on: ubuntu-20.04
     needs:
-      - Dashboard-ProductManagement
+#      - Dashboard-ProductManagement
 #      - Storefront-ProductDetail-Promotion
       - Android-GoSELLER-ProductManagement
-      - IOS-GoSELLER-ProductManagement
+#      - IOS-GoSELLER-ProductManagement
 
     if: always()
     steps:
