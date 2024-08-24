@@ -48,7 +48,7 @@ jobs:
           cat $HOME/openvpn.log
       - name: Clone GitLab repository
         run: |
-          git clone ${{ secrets.GIT_REPO }} GoSELL-Automation
+          git clone ${{ secrets.GIT_REPO }} CheckoutFolder
       - name: Stop OpenVPN
         run: |
           sudo pkill -f openvpn
