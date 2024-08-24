@@ -61,5 +61,4 @@ jobs:
     with:
       vpn_username: ${{ secrets.VPN_USERNAME }}
       vpn_password: ${{ secrets.VPN_PASSWORD }}
-      gitlab_host: ${{ secrets.GIT_REPO }}
       gitlab_repo: ${{ secrets.GIT_REPO }}
