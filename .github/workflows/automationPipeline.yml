@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  BRANCH_NAME: GoSELL-Thang
+  BRANCH_NAME: "GoSELL-Thang"
 
 jobs:
   CloneGit:
