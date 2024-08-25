@@ -10,8 +10,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  ART: ClonedRepo
-  BRANCH: GoSELL-Thang
+  ART: "ClonedRepo"
+  BRANCH: "GoSELL-Thang"
 
 jobs:
   CloneGit:
