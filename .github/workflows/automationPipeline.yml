@@ -20,9 +20,68 @@ jobs:
       VPN_USERNAME: ${{ secrets.VPN_USERNAME }}
       VPN_PASSWORD: ${{ secrets.VPN_PASSWORD }}
       GIT_REPO: ${{ secrets.GIT_REPO }}
+  Web:
+    needs: Get-SourceCode
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Check web feature"
+
+  Dashboard:
+    needs: Web
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Verify dashboard feature"
+
+  StoreFront:
+    needs: Web
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Verify storefront feature"
+
+  App:
+    needs: Get-SourceCode
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Check app feature"
+
+  Android:
+    needs: App
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Check Android app"
+
+  Android-GoSELLER:
+    needs: Android
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Check Android GoSELLER app"
+
+  Android-GoBUYER:
+    needs: Android
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Check Android GoBUYER app"
+
+  iOS:
+    needs: App
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Check iOS app"
+
+  iOS-GoSELLER:
+    needs: iOS
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Check iOS GoSELLER app"
+
+  iOS-GoBUYER:
+    needs: iOS
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Check iOS GoBUYER app"
 
   Dashboard-CreateProduct:
-    needs: Get-SourceCode
+    needs: Dashboard
     uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
     with:
       artifact: "ClonedRepo"
@@ -31,7 +90,7 @@ jobs:
       branch_name: "GoSELL-Thang"
 
   Dashboard-UpdateProduct:
-    needs: Get-SourceCode
+    needs: Dashboard
     uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
     with:
       artifact: "ClonedRepo"
@@ -53,7 +112,7 @@ jobs:
       branch_name: "GoSELL-Thang"
 
   Storefront-ProductDetail-NormalxWithoutVariation:
-    needs: Get-SourceCode
+    needs: StoreFront
     uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
     with:
       artifact: "ClonedRepo"
@@ -62,7 +121,7 @@ jobs:
       branch_name: "GoSELL-Thang"
 
   Storefront-ProductDetail-IMEIxWithoutVariation:
-    needs: Get-SourceCode
+    needs: StoreFront
     uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
     with:
       artifact: "ClonedRepo"
@@ -71,7 +130,7 @@ jobs:
       branch_name: "GoSELL-Thang"
 
   Storefront-ProductDetail-NormalxVariation:
-    needs: Get-SourceCode
+    needs: StoreFront
     uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
     with:
       artifact: "ClonedRepo"
@@ -80,7 +139,7 @@ jobs:
       branch_name: "GoSELL-Thang"
 
   Storefront-ProductDetail-IMEIxVariation:
-    needs: Get-SourceCode
+    needs: StoreFront
     uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
     with:
       artifact: "ClonedRepo"
@@ -104,7 +163,7 @@ jobs:
       branch_name: "GoSELL-Thang"
 
   Android-GoSELLER-CreateProduct:
-    needs: Get-SourceCode
+    needs: Android-GoSELLER
     uses: SMTG-04/Reusable/.github/workflows/androidAppiumConfigs.yml@main
     with:
       artifact: "ClonedRepo"
@@ -114,7 +173,7 @@ jobs:
       branch_name: "GoSELL-Thang"
 
   Android-GoSELLER-UpdateProduct:
-    needs: Get-SourceCode
+    needs: Android-GoSELLER
     uses: SMTG-04/Reusable/.github/workflows/androidAppiumConfigs.yml@main
     with:
       artifact: "ClonedRepo"
@@ -137,7 +196,7 @@ jobs:
       branch_name: "GoSELL-Thang"
 
   IOS-GoSELLER-CreateProduct:
-    needs: Get-SourceCode
+    needs: iOS-GoSELLER
     uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
     with:
       artifact: "ClonedRepo"
@@ -147,7 +206,7 @@ jobs:
       branch_name: "GoSELL-Thang"
 
   IOS-GoSELLER-UpdateProduct:
-    needs: Get-SourceCode
+    needs: iOS-GoSELLER
     if: always()
     uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
     with:
