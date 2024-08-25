@@ -55,7 +55,7 @@ jobs:
 #          path: CheckoutFolder
 
   Dashboard-CreateProduct:
-    needs: CloneGit
+#    needs: CloneGit
     uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
     with:
 #      artifact: "GitCloned"
