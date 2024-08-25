@@ -195,6 +195,16 @@ jobs:
       test_config: "test_config/android/seller/productManagementTest.xml"
       branch_name: "GoSELL-Thang"
 
+  Android-GoBUYER-ProductDetail:
+    needs: Android-GoBUYER
+    uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
+    with:
+      artifact: "ClonedRepo"
+      appium_port: "4723"
+      test_name: "IOS-GoSELLER-ProductManagement"
+      test_config: "test_config/android/buyer/productDetail.xml"
+      branch_name: "GoSELL-Thang"
+
   IOS-GoSELLER-CreateProduct:
     needs: iOS-GoSELLER
     uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
@@ -227,6 +237,16 @@ jobs:
       appium_port: "4723"
       test_name: "IOS-GoSELLER-ProductManagement"
       test_config: "test_config/iOS/seller/productManagementTest.xml"
+      branch_name: "GoSELL-Thang"
+
+  IOS-GoBUYER-ProductDetail:
+    needs: iOS-GoBUYER
+    uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
+    with:
+      artifact: "ClonedRepo"
+      appium_port: "4723"
+      test_name: "IOS-GoSELLER-ProductManagement"
+      test_config: "test_config/iOS/buyer/productDetail.xml"
       branch_name: "GoSELL-Thang"
 
 
