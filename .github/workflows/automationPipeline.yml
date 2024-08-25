@@ -9,10 +9,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-env:
-  ART: "ClonedRepo"
-  BRANCH: "GoSELL-Thang"
-
 jobs:
   CloneGit:
     runs-on: ubuntu-20.04
@@ -55,26 +51,26 @@ jobs:
           sudo pkill -f openvpn
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.ART }}
+          name: ClonedRepo
           path: CheckoutFolder
 
   Dashboard-CreateProduct:
     needs: CloneGit
     uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
     with:
-      artifact: "${{ env.ART }}"
+      artifact: ""ClonedRepo""
       test_name: "Dashboard-CreateProduct"
       test_config: "test_config/web/createProductTest.xml"
-      branch_name: "${{ env.BRANCH }}"
+      branch_name: "GoSELL-Thang"
 
   Dashboard-UpdateProduct:
     needs: CloneGit
     uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
     with:
-      artifact: "${{ env.ART }}"
+      artifact: ""ClonedRepo""
       test_name: "Dashboard-UpdateProduct"
       test_config: "test_config/web/updateProductTest.xml"
-      branch_name: "${{ env.BRANCH }}"
+      branch_name: "GoSELL-Thang"
 
   Dashboard-ProductManagement:
     needs:
@@ -84,46 +80,46 @@ jobs:
     if: always()
     uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
     with:
-      artifact: "${{ env.ART }}"
+      artifact: ""ClonedRepo""
       test_name: "Dashboard-ProductManagement"
       test_config: "test_config/web/productManagementTest.xml"
-      branch_name: "${{ env.BRANCH }}"
+      branch_name: "GoSELL-Thang"
 
   Storefront-ProductDetail-NormalxWithoutVariation:
     needs: CloneGit
     uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
     with:
-      artifact: "${{ env.ART }}"
+      artifact: ""ClonedRepo""
       test_name: "Storefront-ProductDetail-NormalxWithoutVariation"
       test_config: "test_config/web/productDetail_Normal_withoutVariation.xml"
-      branch_name: "${{ env.BRANCH }}"
+      branch_name: "GoSELL-Thang"
 
   Storefront-ProductDetail-IMEIxWithoutVariation:
     needs: CloneGit
     uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
     with:
-      artifact: "${{ env.ART }}"
+      artifact: ""ClonedRepo""
       test_name: "Storefront-ProductDetail-IMEIxWithoutVariation"
       test_config: "test_config/web/productDetail_IMEI_withoutVariation.xml"
-      branch_name: "${{ env.BRANCH }}"
+      branch_name: "GoSELL-Thang"
 
   Storefront-ProductDetail-NormalxVariation:
     needs: CloneGit
     uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
     with:
-      artifact: "${{ env.ART }}"
+      artifact: ""ClonedRepo""
       test_name: "Storefront-ProductDetail-NormalxVariation"
       test_config: "test_config/web/productDetail_Normal_Variation.xml"
-      branch_name: "${{ env.BRANCH }}"
+      branch_name: "GoSELL-Thang"
 
   Storefront-ProductDetail-IMEIxVariation:
     needs: CloneGit
     uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
     with:
-      artifact: "${{ env.ART }}"
+      artifact: ""ClonedRepo""
       test_name: "Storefront-ProductDetail-IMEIxVariation"
       test_config: "test_config/web/productDetail_IMEI_Variation.xml"
-      branch_name: "${{ env.BRANCH }}"
+      branch_name: "GoSELL-Thang"
 
   Storefront-ProductDetail-Promotion:
     needs:
@@ -135,30 +131,30 @@ jobs:
     if: always()
     uses: ThangNguyen0495/Reusable/.github/workflows/seleniumConfigs.yml@main
     with:
-      artifact: "${{ env.ART }}"
+      artifact: ""ClonedRepo""
       test_name: "Storefront-ProductDetail-Promotion"
       test_config: "test_config/web/productDetail_combinePromotion.xml"
-      branch_name: "${{ env.BRANCH }}"
+      branch_name: "GoSELL-Thang"
 
   Android-GoSELLER-CreateProduct:
     needs: CloneGit
     uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
     with:
-      artifact: "${{ env.ART }}"
+      artifact: ""ClonedRepo""
       appium_port: "4723"
       test_name: "Android-GoSELLER-CreateProduct"
       test_config: "test_config/android/seller/createProductTest.xml"
-      branch_name: "${{ env.BRANCH }}"
+      branch_name: "GoSELL-Thang"
 
   Android-GoSELLER-UpdateProduct:
     needs: CloneGit
     uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
     with:
-      artifact: "${{ env.ART }}"
+      artifact: ""ClonedRepo""
       appium_port: "4723"
       test_name: "Android-GoSELLER-UpdateProduct"
       test_config: "test_config/android/seller/editProductTest.xml"
-      branch_name: "${{ env.BRANCH }}"
+      branch_name: "GoSELL-Thang"
 
   Android-GoSELLER-ProductManagement:
     needs:
@@ -167,32 +163,32 @@ jobs:
     if: always()
     uses: ThangNguyen0495/Reusable/.github/workflows/androidAppiumConfigs.yml@main
     with:
-      artifact: "${{ env.ART }}"
+      artifact: ""ClonedRepo""
       appium_port: "4723"
       test_name: "Android-GoSELLER-ProductManagement"
       test_config: "test_config/android/seller/productManagementTest.xml"
-      branch_name: "${{ env.BRANCH }}"
+      branch_name: "GoSELL-Thang"
 
   IOS-GoSELLER-CreateProduct:
     needs: CloneGit
     uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
     with:
-      artifact: "${{ env.ART }}"
+      artifact: ""ClonedRepo""
       appium_port: "4723"
       test_name: "IOS-GoSELLER-CreateProduct"
       test_config: "test_config/iOS/seller/createProductTest.xml"
-      branch_name: "${{ env.BRANCH }}"
+      branch_name: "GoSELL-Thang"
 
   IOS-GoSELLER-UpdateProduct:
     needs: CloneGit
     if: always()
     uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
     with:
-      artifact: "${{ env.ART }}"
+      artifact: ""ClonedRepo""
       appium_port: "4723"
       test_name: "IOS-GoSELLER-UpdateProduct"
       test_config: "test_config/iOS/seller/editProductTest.xml"
-      branch_name: "${{ env.BRANCH }}"
+      branch_name: "GoSELL-Thang"
 
   IOS-GoSELLER-ProductManagement:
     needs:
@@ -201,11 +197,11 @@ jobs:
     if: always()
     uses: ThangNguyen0495/Reusable/.github/workflows/iosAppiumConfigs.yml@main
     with:
-      artifact: "${{ env.ART }}"
+      artifact: ""ClonedRepo""
       appium_port: "4723"
       test_name: "IOS-GoSELLER-ProductManagement"
       test_config: "test_config/iOS/seller/productManagementTest.xml"
-      branch_name: "${{ env.BRANCH }}"
+      branch_name: "GoSELL-Thang"
 
 
   CleanJob:
