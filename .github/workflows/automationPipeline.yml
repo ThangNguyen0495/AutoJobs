@@ -44,38 +44,26 @@ jobs:
     steps:
       - run: echo "Check app feature"
 
-  Android:
-    needs: App
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Check Android app"
-
   Android-GoSELLER:
-    needs: Android
+    needs: App
     runs-on: ubuntu-latest
     steps:
       - run: echo "Check Android GoSELLER app"
 
   Android-GoBUYER:
-    needs: Android
+    needs: App
     runs-on: ubuntu-latest
     steps:
       - run: echo "Check Android GoBUYER app"
 
-  iOS:
-    needs: App
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Check iOS app"
-
   iOS-GoSELLER:
-    needs: iOS
+    needs: App
     runs-on: ubuntu-latest
     steps:
       - run: echo "Check iOS GoSELLER app"
 
   iOS-GoBUYER:
-    needs: iOS
+    needs: App
     runs-on: ubuntu-latest
     steps:
       - run: echo "Check iOS GoBUYER app"
