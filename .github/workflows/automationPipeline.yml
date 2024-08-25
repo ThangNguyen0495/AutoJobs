@@ -244,7 +244,9 @@ jobs:
       - Dashboard-ProductManagement
       - Storefront-ProductDetail-Promotion
       - Android-GoSELLER-ProductManagement
+      - Android-GoBUYER-ProductDetail
       - IOS-GoSELLER-ProductManagement
+      - IOS-GoBUYER-ProductDetail
 
     if: always()
     steps:
