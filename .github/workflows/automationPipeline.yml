@@ -4,22 +4,31 @@ on:
   push:
     branches:
       - main
-#  schedule:
-#    - cron: '0 17 * * *'
+  schedule:
+    - cron: '0 17 * * *'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
+#  Get-SourceCode:
+#    uses: SMTG-04/Reusable/.github/workflows/cloneGitConfigs.yml@main
+#    with:
+#      artifact: "ClonedRepo"
+#    secrets:
+#      VPN_USERNAME: ${{ secrets.VPN_USERNAME }}
+#      VPN_PASSWORD: ${{ secrets.VPN_PASSWORD }}
+#      GIT_REPO: ${{ secrets.GIT_REPO }}
+
   Get-SourceCode:
     uses: SMTG-04/Reusable/.github/workflows/cloneGitConfigs.yml@main
     with:
       artifact: "ClonedRepo"
+      local_repo: "ThangNguyen0495/GoSELL-Automation123"
     secrets:
-      VPN_USERNAME: ${{ secrets.VPN_USERNAME }}
-      VPN_PASSWORD: ${{ secrets.VPN_PASSWORD }}
-      GIT_REPO: ${{ secrets.GIT_REPO }}
+      PAT: ${{ secrets.PAT }}
+
   Web:
     needs: Get-SourceCode
     runs-on: ubuntu-latest
