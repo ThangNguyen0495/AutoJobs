@@ -194,7 +194,7 @@ jobs:
 
   Android-GoBUYER-ProductDetail:
     needs: Android-GoBUYER
-    uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
+    uses: SMTG-04/Reusable/.github/workflows/androidAppiumConfigs.yml@main
     with:
       artifact: "ClonedRepo"
       appium_port: "4723"
