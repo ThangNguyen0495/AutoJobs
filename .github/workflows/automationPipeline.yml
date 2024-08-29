@@ -78,89 +78,89 @@ jobs:
     steps:
       - run: echo "Check iOS GoBUYER app"
 
-  Dashboard-CreateProduct:
-    needs: Dashboard
-    uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      test_name: "Dashboard-CreateProduct"
-      test_config: "test_config/web/dashboard/createProductTest.xml"
-#      branch_name: "GoSELL-Thang"
-
-  Dashboard-UpdateProduct:
-    needs: Dashboard
-    uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      test_name: "Dashboard-UpdateProduct"
-      test_config: "test_config/web/dashboard/updateProductTest.xml"
-#      branch_name: "GoSELL-Thang"
-
-  Dashboard-ProductManagement:
-    needs:
-      - Dashboard-CreateProduct
-      - Dashboard-UpdateProduct
-
-    if: always()
-    uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      test_name: "Dashboard-ProductManagement"
-      test_config: "test_config/web/dashboard/productManagementTest.xml"
-#      branch_name: "GoSELL-Thang"
-
-  Storefront-ProductDetail:
-    needs: StoreFront
-    uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      test_name: "Storefront-ProductDetail"
-      test_config: "test_config/web/storefront/productDetail.xml"
-#      branch_name: "GoSELL-Thang"
-
-  Android-GoSELLER-CreateProduct:
-    needs: Android-GoSELLER
-    uses: SMTG-04/Reusable/.github/workflows/androidAppiumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      appium_port: "4723"
-      test_name: "Android-GoSELLER-CreateProduct"
-      test_config: "test_config/android/seller/createProductTest.xml"
-#      branch_name: "GoSELL-Thang"
-
-  Android-GoSELLER-UpdateProduct:
-    needs: Android-GoSELLER
-    uses: SMTG-04/Reusable/.github/workflows/androidAppiumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      appium_port: "4723"
-      test_name: "Android-GoSELLER-UpdateProduct"
-      test_config: "test_config/android/seller/editProductTest.xml"
-#      branch_name: "GoSELL-Thang"
-
-  Android-GoSELLER-ProductManagement:
-    needs:
-      - Android-GoSELLER-CreateProduct
-      - Android-GoSELLER-UpdateProduct
-    if: always()
-    uses: SMTG-04/Reusable/.github/workflows/androidAppiumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      appium_port: "4723"
-      test_name: "Android-GoSELLER-ProductManagement"
-      test_config: "test_config/android/seller/productManagementTest.xml"
-#      branch_name: "GoSELL-Thang"
-
-  Android-GoBUYER-ProductDetail:
-    needs: Android-GoBUYER
-    uses: SMTG-04/Reusable/.github/workflows/androidAppiumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      appium_port: "4723"
-      test_name: "IOS-GoSELLER-ProductManagement"
-      test_config: "test_config/android/buyer/productDetail.xml"
-#      branch_name: "GoSELL-Thang"
-
+#  Dashboard-CreateProduct:
+#    needs: Dashboard
+#    uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
+#    with:
+#      artifact: "ClonedRepo"
+#      test_name: "Dashboard-CreateProduct"
+#      test_config: "test_config/web/dashboard/product/createProductTest.xml"
+##      branch_name: "GoSELL-Thang"
+#
+#  Dashboard-UpdateProduct:
+#    needs: Dashboard
+#    uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
+#    with:
+#      artifact: "ClonedRepo"
+#      test_name: "Dashboard-UpdateProduct"
+#      test_config: "test_config/web/dashboard/product/updateProductTest.xml"
+##      branch_name: "GoSELL-Thang"
+#
+#  Dashboard-ProductManagement:
+#    needs:
+#      - Dashboard-CreateProduct
+#      - Dashboard-UpdateProduct
+#
+#    if: always()
+#    uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
+#    with:
+#      artifact: "ClonedRepo"
+#      test_name: "Dashboard-ProductManagement"
+#      test_config: "test_config/web/dashboard/product/productManagementTest.xml"
+##      branch_name: "GoSELL-Thang"
+#
+#  Storefront-ProductDetail:
+#    needs: StoreFront
+#    uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
+#    with:
+#      artifact: "ClonedRepo"
+#      test_name: "Storefront-ProductDetail"
+#      test_config: "test_config/web/storefront/product_detail/productDetail.xml"
+##      branch_name: "GoSELL-Thang"
+#
+#  Android-GoSELLER-CreateProduct:
+#    needs: Android-GoSELLER
+#    uses: SMTG-04/Reusable/.github/workflows/androidAppiumConfigs.yml@main
+#    with:
+#      artifact: "ClonedRepo"
+#      appium_port: "4723"
+#      test_name: "Android-GoSELLER-CreateProduct"
+#      test_config: "test_config/android/seller/createProductTest.xml"
+##      branch_name: "GoSELL-Thang"
+#
+#  Android-GoSELLER-UpdateProduct:
+#    needs: Android-GoSELLER
+#    uses: SMTG-04/Reusable/.github/workflows/androidAppiumConfigs.yml@main
+#    with:
+#      artifact: "ClonedRepo"
+#      appium_port: "4723"
+#      test_name: "Android-GoSELLER-UpdateProduct"
+#      test_config: "test_config/android/seller/editProductTest.xml"
+##      branch_name: "GoSELL-Thang"
+#
+#  Android-GoSELLER-ProductManagement:
+#    needs:
+#      - Android-GoSELLER-CreateProduct
+#      - Android-GoSELLER-UpdateProduct
+#    if: always()
+#    uses: SMTG-04/Reusable/.github/workflows/androidAppiumConfigs.yml@main
+#    with:
+#      artifact: "ClonedRepo"
+#      appium_port: "4723"
+#      test_name: "Android-GoSELLER-ProductManagement"
+#      test_config: "test_config/android/seller/productManagementTest.xml"
+##      branch_name: "GoSELL-Thang"
+#
+#  Android-GoBUYER-ProductDetail:
+#    needs: Android-GoBUYER
+#    uses: SMTG-04/Reusable/.github/workflows/androidAppiumConfigs.yml@main
+#    with:
+#      artifact: "ClonedRepo"
+#      appium_port: "4723"
+#      test_name: "IOS-GoSELLER-ProductManagement"
+#      test_config: "test_config/android/buyer/productDetail.xml"
+##      branch_name: "GoSELL-Thang"
+#
   IOS-GoSELLER-CreateProduct:
     needs: iOS-GoSELLER
     uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
@@ -170,51 +170,52 @@ jobs:
       test_name: "IOS-GoSELLER-CreateProduct"
       test_config: "test_config/iOS/seller/createProductTest.xml"
 #      branch_name: "GoSELL-Thang"
-
-  IOS-GoSELLER-UpdateProduct:
-    needs: iOS-GoSELLER
-    if: always()
-    uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      appium_port: "4723"
-      test_name: "IOS-GoSELLER-UpdateProduct"
-      test_config: "test_config/iOS/seller/editProductTest.xml"
-#      branch_name: "GoSELL-Thang"
-
-  IOS-GoSELLER-ProductManagement:
-    needs:
-      - IOS-GoSELLER-CreateProduct
-      - IOS-GoSELLER-UpdateProduct
-    if: always()
-    uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      appium_port: "4723"
-      test_name: "IOS-GoSELLER-ProductManagement"
-      test_config: "test_config/iOS/seller/productManagementTest.xml"
-#      branch_name: "GoSELL-Thang"
-
-  IOS-GoBUYER-ProductDetail:
-    needs: iOS-GoBUYER
-    uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      appium_port: "4723"
-      test_name: "IOS-GoSELLER-ProductManagement"
-      test_config: "test_config/iOS/buyer/productDetail.xml"
-#      branch_name: "GoSELL-Thang"
+#
+#  IOS-GoSELLER-UpdateProduct:
+#    needs: iOS-GoSELLER
+#    if: always()
+#    uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
+#    with:
+#      artifact: "ClonedRepo"
+#      appium_port: "4723"
+#      test_name: "IOS-GoSELLER-UpdateProduct"
+#      test_config: "test_config/iOS/seller/editProductTest.xml"
+##      branch_name: "GoSELL-Thang"
+#
+#  IOS-GoSELLER-ProductManagement:
+#    needs:
+#      - IOS-GoSELLER-CreateProduct
+#      - IOS-GoSELLER-UpdateProduct
+#    if: always()
+#    uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
+#    with:
+#      artifact: "ClonedRepo"
+#      appium_port: "4723"
+#      test_name: "IOS-GoSELLER-ProductManagement"
+#      test_config: "test_config/iOS/seller/productManagementTest.xml"
+##      branch_name: "GoSELL-Thang"
+#
+#  IOS-GoBUYER-ProductDetail:
+#    needs: iOS-GoBUYER
+#    uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
+#    with:
+#      artifact: "ClonedRepo"
+#      appium_port: "4723"
+#      test_name: "IOS-GoSELLER-ProductManagement"
+#      test_config: "test_config/iOS/buyer/productDetail.xml"
+##      branch_name: "GoSELL-Thang"
 
 
   CleanJob:
     runs-on: ubuntu-20.04
     needs:
-      - Dashboard-ProductManagement
-      - Storefront-ProductDetail
-      - Android-GoSELLER-ProductManagement
-      - Android-GoBUYER-ProductDetail
-      - IOS-GoSELLER-ProductManagement
-      - IOS-GoBUYER-ProductDetail
+#      - Dashboard-ProductManagement
+#      - Storefront-ProductDetail
+#      - Android-GoSELLER-ProductManagement
+#      - Android-GoBUYER-ProductDetail
+#      - IOS-GoSELLER-ProductManagement
+#      - IOS-GoBUYER-ProductDetail
+    - IOS-GoSELLER-CreateProduct
 
     if: always()
     steps:
