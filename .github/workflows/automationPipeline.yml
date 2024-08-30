@@ -174,13 +174,13 @@ jobs:
         with:
           artifact: "ClonedRepo"
           appium_port: "4723"
-          test_name: "IOS-GoSELLER-ProductManagement"
+          test_name: "Android-GoBUYER-ProductDetail"
           test_config: "test_config/android/buyer/productDetail.xml"
   #      branch_name: "GoSELL-Thang"
 
   IOS-GoSELLER-CreateProduct:
     needs: iOS-GoSELLER
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: ThangNguyen0495/execute-appium-ios-test@v1.0.0
         with:
@@ -193,7 +193,7 @@ jobs:
   IOS-GoSELLER-UpdateProduct:
     needs: iOS-GoSELLER
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: ThangNguyen0495/execute-appium-ios-test@v1.0.0
         with:
@@ -208,7 +208,7 @@ jobs:
       - IOS-GoSELLER-CreateProduct
       - IOS-GoSELLER-UpdateProduct
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: ThangNguyen0495/execute-appium-ios-test@v1.0.0
         with:
@@ -220,13 +220,13 @@ jobs:
 
   IOS-GoBUYER-ProductDetail:
     needs: iOS-GoBUYER
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: ThangNguyen0495/execute-appium-ios-test@v1.0.0
         with:
           artifact: "ClonedRepo"
           appium_port: "4723"
-          test_name: "IOS-GoSELLER-ProductManagement"
+          test_name: "IOS-GoBUYER-ProductDetail"
           test_config: "test_config/iOS/buyer/productDetail.xml"
   #      branch_name: "GoSELL-Thang"
 
