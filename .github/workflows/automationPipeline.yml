@@ -30,53 +30,64 @@ jobs:
     secrets:
       PAT: ${{ secrets.PAT }}
 
-  Web:
-    needs: Get-SourceCode
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Check web feature"
+  try-selenium-job:
+    runs-on: macos-13
 
-  Dashboard:
-    needs: Web
-    runs-on: ubuntu-latest
     steps:
-      - run: echo "Verify dashboard feature"
+      - name: Try selenium test
+        uses: ThangNguyen0495/Customs@s1.0.2
+        with:
+          artifact: "ClonedRepo"
+          test_config: "test_config/web/dashboard/product/createProductTest.xml"
+          test_name: "test selenium"
 
-  StoreFront:
-    needs: Web
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Verify storefront feature"
+#  Web:
+#    needs: Get-SourceCode
+#    runs-on: ubuntu-latest
+#    steps:
+#      - run: echo "Check web feature"
 
-  App:
-    needs: Get-SourceCode
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Check app feature"
-
-  Android-GoSELLER:
-    needs: App
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Check Android GoSELLER app"
-
-  Android-GoBUYER:
-    needs: App
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Check Android GoBUYER app"
-
-  iOS-GoSELLER:
-    needs: App
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Check iOS GoSELLER app"
-
-  iOS-GoBUYER:
-    needs: App
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Check iOS GoBUYER app"
+#  Dashboard:
+#    needs: Web
+#    runs-on: ubuntu-latest
+#    steps:
+#      - run: echo "Verify dashboard feature"
+#
+#  StoreFront:
+#    needs: Web
+#    runs-on: ubuntu-latest
+#    steps:
+#      - run: echo "Verify storefront feature"
+#
+#  App:
+#    needs: Get-SourceCode
+#    runs-on: ubuntu-latest
+#    steps:
+#      - run: echo "Check app feature"
+#
+#  Android-GoSELLER:
+#    needs: App
+#    runs-on: ubuntu-latest
+#    steps:
+#      - run: echo "Check Android GoSELLER app"
+#
+#  Android-GoBUYER:
+#    needs: App
+#    runs-on: ubuntu-latest
+#    steps:
+#      - run: echo "Check Android GoBUYER app"
+#
+#  iOS-GoSELLER:
+#    needs: App
+#    runs-on: ubuntu-latest
+#    steps:
+#      - run: echo "Check iOS GoSELLER app"
+#
+#  iOS-GoBUYER:
+#    needs: App
+#    runs-on: ubuntu-latest
+#    steps:
+#      - run: echo "Check iOS GoBUYER app"
 
 #  Dashboard-CreateProduct:
 #    needs: Dashboard
@@ -171,15 +182,15 @@ jobs:
 #      test_config: "test_config/iOS/seller/createProductTest.xml"
 ##      branch_name: "GoSELL-Thang"
 #
-  IOS-GoSELLER-UpdateProduct:
-    needs: iOS-GoSELLER
-    if: always()
-    uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      appium_port: "4723"
-      test_name: "IOS-GoSELLER-UpdateProduct"
-      test_config: "test_config/iOS/seller/editProductTest.xml"
+#  IOS-GoSELLER-UpdateProduct:
+#    needs: iOS-GoSELLER
+#    if: always()
+#    uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
+#    with:
+#      artifact: "ClonedRepo"
+#      appium_port: "4723"
+#      test_name: "IOS-GoSELLER-UpdateProduct"
+#      test_config: "test_config/iOS/seller/editProductTest.xml"
 #      branch_name: "GoSELL-Thang"
 #
 #  IOS-GoSELLER-ProductManagement:
@@ -206,21 +217,21 @@ jobs:
 ##      branch_name: "GoSELL-Thang"
 
 
-  CleanJob:
-    runs-on: ubuntu-20.04
-    needs:
-#      - Dashboard-ProductManagement
-#      - Storefront-ProductDetail
-#      - Android-GoSELLER-ProductManagement
-#      - Android-GoBUYER-ProductDetail
-#      - IOS-GoSELLER-ProductManagement
-#      - IOS-GoBUYER-ProductDetail
-    - IOS-GoSELLER-UpdateProduct
-
-    if: always()
-    steps:
-      - name: Delete clone repository
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: ClonedRepo
+#  CleanJob:
+#    runs-on: ubuntu-20.04
+#    needs:
+##      - Dashboard-ProductManagement
+##      - Storefront-ProductDetail
+##      - Android-GoSELLER-ProductManagement
+##      - Android-GoBUYER-ProductDetail
+##      - IOS-GoSELLER-ProductManagement
+##      - IOS-GoBUYER-ProductDetail
+#    - IOS-GoSELLER-UpdateProduct
+#
+#    if: always()
+#    steps:
+#      - name: Delete clone repository
+#        uses: geekyeggo/delete-artifact@v5
+#        with:
+#          name: ClonedRepo
 
