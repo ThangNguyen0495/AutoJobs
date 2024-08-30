@@ -201,7 +201,7 @@ jobs:
           appium_port: "4723"
           test_name: "IOS-GoSELLER-UpdateProduct"
           test_config: "test_config/iOS/seller/editProductTest.xml"
-          branch_name: "GoSELL-Thang"
+#          branch_name: "GoSELL-Thang"
 
   IOS-GoSELLER-ProductManagement:
     needs:
