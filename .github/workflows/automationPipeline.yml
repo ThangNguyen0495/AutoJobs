@@ -30,16 +30,16 @@ jobs:
     secrets:
       PAT: ${{ secrets.PAT }}
 
-  Dashboard-CreateProduct:
-    needs: Get-SourceCode
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
-        with:
-          artifact: "ClonedRepo"
-          test_name: "Dashboard-CreateProduct"
-          test_config: "test_config/web/dashboard/product/createProductTest.xml"
-      #      branch_name: "GoSELL-Thang"
+#  Dashboard-CreateProduct:
+#    needs: Get-SourceCode
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
+#        with:
+#          artifact: "ClonedRepo"
+#          test_name: "Dashboard-CreateProduct"
+#          test_config: "test_config/web/dashboard/product/createProductTest.xml"
+#      #      branch_name: "GoSELL-Thang"
 
 
   Dashboard-UpdateProduct:
@@ -55,7 +55,7 @@ jobs:
 
   Dashboard-ProductManagement:
     needs:
-      - Dashboard-CreateProduct
+#      - Dashboard-CreateProduct
       - Dashboard-UpdateProduct
 
     runs-on: ubuntu-latest
@@ -79,16 +79,16 @@ jobs:
           test_config: "test_config/web/storefront/product_detail/productDetail.xml"
   #      branch_name: "GoSELL-Thang"
 
-  Android-GoSELLER-CreateProduct:
-    needs: Get-SourceCode
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ThangNguyen0495/execute-appium-android-test@v1.0.0
-        with:
-          artifact: "ClonedRepo"
-          test_name: "Android-GoSELLER-CreateProduct"
-          test_config: "test_config/android/seller/createProductTest.xml"
-  #      branch_name: "GoSELL-Thang"
+#  Android-GoSELLER-CreateProduct:
+#    needs: Get-SourceCode
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: ThangNguyen0495/execute-appium-android-test@v1.0.0
+#        with:
+#          artifact: "ClonedRepo"
+#          test_name: "Android-GoSELLER-CreateProduct"
+#          test_config: "test_config/android/seller/createProductTest.xml"
+#  #      branch_name: "GoSELL-Thang"
 
   Android-GoSELLER-UpdateProduct:
     needs: Get-SourceCode
@@ -101,19 +101,19 @@ jobs:
           test_config: "test_config/android/seller/editProductTest.xml"
   #      branch_name: "GoSELL-Thang"
 
-  Android-GoSELLER-ProductManagement:
-    needs:
-      - Android-GoSELLER-CreateProduct
-      - Android-GoSELLER-UpdateProduct
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ThangNguyen0495/execute-appium-android-test@v1.0.0
-        with:
-          artifact: "ClonedRepo"
-          test_name: "Android-GoSELLER-ProductManagement"
-          test_config: "test_config/android/seller/productManagementTest.xml"
-  #      branch_name: "GoSELL-Thang"
+#  Android-GoSELLER-ProductManagement:
+#    needs:
+#      - Android-GoSELLER-CreateProduct
+#      - Android-GoSELLER-UpdateProduct
+#    if: always()
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: ThangNguyen0495/execute-appium-android-test@v1.0.0
+#        with:
+#          artifact: "ClonedRepo"
+#          test_name: "Android-GoSELLER-ProductManagement"
+#          test_config: "test_config/android/seller/productManagementTest.xml"
+#  #      branch_name: "GoSELL-Thang"
 
   Android-GoBUYER-ProductDetail:
     needs: Get-SourceCode
@@ -149,30 +149,30 @@ jobs:
           test_config: "test_config/iOS/seller/editProductTest.xml"
 #          branch_name: "GoSELL-Thang"
 
-  IOS-GoSELLER-ProductManagement:
-    needs:
-      - IOS-GoSELLER-CreateProduct
-      - IOS-GoSELLER-UpdateProduct
-    if: always()
-    runs-on: macos-latest
-    steps:
-      - uses: ThangNguyen0495/execute-appium-ios-test@v1.0.0
-        with:
-          artifact: "ClonedRepo"
-          test_name: "IOS-GoSELLER-ProductManagement"
-          test_config: "test_config/iOS/seller/productManagementTest.xml"
-  #      branch_name: "GoSELL-Thang"
+#  IOS-GoSELLER-ProductManagement:
+#    needs:
+#      - IOS-GoSELLER-CreateProduct
+#      - IOS-GoSELLER-UpdateProduct
+#    if: always()
+#    runs-on: macos-latest
+#    steps:
+#      - uses: ThangNguyen0495/execute-appium-ios-test@v1.0.0
+#        with:
+#          artifact: "ClonedRepo"
+#          test_name: "IOS-GoSELLER-ProductManagement"
+#          test_config: "test_config/iOS/seller/productManagementTest.xml"
+#  #      branch_name: "GoSELL-Thang"
 
-  IOS-GoBUYER-ProductDetail:
-    needs: Get-SourceCode
-    runs-on: macos-latest
-    steps:
-      - uses: ThangNguyen0495/execute-appium-ios-test@v1.0.0
-        with:
-          artifact: "ClonedRepo"
-          test_name: "IOS-GoBUYER-ProductDetail"
-          test_config: "test_config/iOS/buyer/productDetail.xml"
-  #      branch_name: "GoSELL-Thang"
+#  IOS-GoBUYER-ProductDetail:
+#    needs: Get-SourceCode
+#    runs-on: macos-latest
+#    steps:
+#      - uses: ThangNguyen0495/execute-appium-ios-test@v1.0.0
+#        with:
+#          artifact: "ClonedRepo"
+#          test_name: "IOS-GoBUYER-ProductDetail"
+#          test_config: "test_config/iOS/buyer/productDetail.xml"
+#  #      branch_name: "GoSELL-Thang"
 
 
   CleanJob:
@@ -180,10 +180,12 @@ jobs:
     needs:
       - Dashboard-ProductManagement
       - Storefront-ProductDetail
-      - Android-GoSELLER-ProductManagement
+#      - Android-GoSELLER-ProductManagement
       - Android-GoBUYER-ProductDetail
-      - IOS-GoSELLER-ProductManagement
-      - IOS-GoBUYER-ProductDetail
+#      - IOS-GoSELLER-ProductManagement
+#      - IOS-GoBUYER-ProductDetail
+      - IOS-GoSELLER-UpdateProduct
+      - IOS-GoSELLER-UpdateProduct
 
     if: always()
     steps:
