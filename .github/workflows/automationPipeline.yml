@@ -163,34 +163,14 @@ jobs:
 #          test_config: "test_config/iOS/seller/productManagementTest.xml"
 #  #      branch_name: "GoSELL-Thang"
 
-#  IOS-GoBUYER-ProductDetail:
-#    needs: Get-SourceCode
-#    runs-on: macos-latest
-#    steps:
-#      - uses: ThangNguyen0495/execute-appium-ios-test@v1.0.0
-#        with:
-#          artifact: "ClonedRepo"
-#          test_name: "IOS-GoBUYER-ProductDetail"
-#          test_config: "test_config/iOS/buyer/productDetail.xml"
-#  #      branch_name: "GoSELL-Thang"
-
-
-  CleanJob:
-    runs-on: ubuntu-20.04
-    needs:
-      - Dashboard-ProductManagement
-      - Storefront-ProductDetail
-#      - Android-GoSELLER-ProductManagement
-      - Android-GoBUYER-ProductDetail
-#      - IOS-GoSELLER-ProductManagement
-#      - IOS-GoBUYER-ProductDetail
-      - IOS-GoSELLER-UpdateProduct
-      - IOS-GoSELLER-UpdateProduct
-
-    if: always()
+  IOS-GoBUYER-ProductDetail:
+    needs: Get-SourceCode
+    runs-on: macos-latest
     steps:
-      - name: Delete clone repository
-        uses: geekyeggo/delete-artifact@v5
+      - uses: ThangNguyen0495/execute-appium-ios-test@v1.0.0
         with:
-          name: ClonedRepo
+          artifact: "ClonedRepo"
+          test_name: "IOS-GoBUYER-ProductDetail"
+          test_config: "test_config/iOS/buyer/productDetail.xml"
+  #      branch_name: "GoSELL-Thang"
 
