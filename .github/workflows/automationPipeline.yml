@@ -174,3 +174,23 @@ jobs:
           test_config: "test_config/iOS/buyer/productDetail.xml"
   #      branch_name: "GoSELL-Thang"
 
+
+  CleanJob:
+    runs-on: ubuntu-20.04
+    needs:
+      - Dashboard-ProductManagement
+      - Storefront-ProductDetail
+#      - Android-GoSELLER-ProductManagement
+      - Android-GoBUYER-ProductDetail
+#      - IOS-GoSELLER-ProductManagement
+#      - IOS-GoBUYER-ProductDetail
+      - IOS-GoSELLER-UpdateProduct
+      - IOS-GoSELLER-UpdateProduct
+
+    if: always()
+    steps:
+      - name: Delete clone repository
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: ClonedRepo
+
