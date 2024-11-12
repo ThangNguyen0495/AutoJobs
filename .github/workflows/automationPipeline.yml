@@ -48,6 +48,7 @@ jobs:
     steps:
       - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
         with:
+          artifact: "ClonedRepo"
           test_name: "Dashboard-Login"
           scripts: |
             echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
@@ -163,8 +164,8 @@ jobs:
   CleanJob:
     runs-on: ubuntu-20.04
     needs:
-      - Dashboard-Login
       - Dashboard-ProductManagement
+      - Dashboard-Login
 
     if: always()
     steps:
