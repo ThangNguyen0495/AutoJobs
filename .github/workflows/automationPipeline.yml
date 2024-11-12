@@ -26,166 +26,144 @@ jobs:
     uses: SMTG-04/Reusable/.github/workflows/cloneGitConfigs.yml@main
     with:
       artifact: "ClonedRepo"
-      local_repo: "ThangNguyen0495/GoSELL-Automation123"
+      local_repo: "ThangNguyen0495/RefactorGS"
     secrets:
       PAT: ${{ secrets.PAT }}
 
-#  Dashboard-CreateProduct:
-#    needs: Get-SourceCode
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
-#        with:
-#          artifact: "ClonedRepo"
-#          test_name: "Dashboard-CreateProduct"
-#          test_config: "test_config/web/dashboard/product/createProductTest.xml"
-#      #      branch_name: "GoSELL-Thang"
+  Web:
+    needs: Get-SourceCode
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Check web feature"
 
+  Dashboard:
+    needs: Web
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Verify dashboard feature"
+  
+  Dashboard-Login:
+    needs: Dashboard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
+        with:
+          test_name: "Dashboard-Login"
+          scripts: |
+            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
+            echo "buyerAccount=${{ secrets.BUYER_ACCOUNT }}" > src/main/resources/config.properties
+            echo "buyerPassword=${{ secrets.BUYER_PASSWORD }}" >> src/main/resources/config.properties
+            echo "sellerAccount=${{ secrets.SELLER_ACCOUNT }}" >> src/main/resources/config.properties
+            echo "sellerPassword=${{ secrets.SELLER_PASSWORD }}" >> src/main/resources/config.properties
+            echo "apiHost=${{ secrets.API_HOST }}" >> src/main/resources/config.properties
+            echo "browser=${{ secrets.BROWSER }}" >> src/main/resources/config.properties
+            echo "domain=${{ secrets.DOMAIN }}" >> src/main/resources/config.properties
+            echo "storeURL=${{ secrets.STORE_URL }}" >> src/main/resources/config.properties
+            echo "headless=${{ secrets.HEADLESS }}" >> src/main/resources/config.properties
+            echo "enableProxy=false" >> src/main/resources/config.properties
+            chmod 600 src/main/resources/config.properties
+            mvn test "-DsuiteFile=test_configs/web/seller/loginTest.xml"
+
+  Dashboard-CreateProduct:
+    needs: Dashboard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
+        with:
+          artifact: "ClonedRepo"
+          test_name: "Dashboard-CreateProduct"
+          scripts: |
+            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
+            echo "buyerAccount=${{ secrets.BUYER_ACCOUNT }}" > src/main/resources/config.properties
+            echo "buyerPassword=${{ secrets.BUYER_PASSWORD }}" >> src/main/resources/config.properties
+            echo "sellerAccount=${{ secrets.SELLER_ACCOUNT }}" >> src/main/resources/config.properties
+            echo "sellerPassword=${{ secrets.SELLER_PASSWORD }}" >> src/main/resources/config.properties
+            echo "apiHost=${{ secrets.API_HOST }}" >> src/main/resources/config.properties
+            echo "browser=${{ secrets.BROWSER }}" >> src/main/resources/config.properties
+            echo "domain=${{ secrets.DOMAIN }}" >> src/main/resources/config.properties
+            echo "storeURL=${{ secrets.STORE_URL }}" >> src/main/resources/config.properties
+            echo "headless=${{ secrets.HEADLESS }}" >> src/main/resources/config.properties
+            echo "enableProxy=false" >> src/main/resources/config.properties
+            chmod 600 src/main/resources/config.properties
+            mvn test "-DsuiteFile=test_configs/web/seller/create_product.xml"
 
   Dashboard-UpdateProduct:
-    needs: Get-SourceCode
+    needs: Dashboard
     runs-on: ubuntu-latest
     steps:
       - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
         with:
           artifact: "ClonedRepo"
           test_name: "Dashboard-UpdateProduct"
-          test_config: "test_config/web/dashboard/product/updateProductTest.xml"
-  #      branch_name: "GoSELL-Thang"
+          scripts: |
+            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
+            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
+            echo "buyerAccount=${{ secrets.BUYER_ACCOUNT }}" > src/main/resources/config.properties
+            echo "buyerPassword=${{ secrets.BUYER_PASSWORD }}" >> src/main/resources/config.properties
+            echo "sellerAccount=${{ secrets.SELLER_ACCOUNT }}" >> src/main/resources/config.properties
+            echo "sellerPassword=${{ secrets.SELLER_PASSWORD }}" >> src/main/resources/config.properties
+            echo "apiHost=${{ secrets.API_HOST }}" >> src/main/resources/config.properties
+            echo "browser=${{ secrets.BROWSER }}" >> src/main/resources/config.properties
+            echo "domain=${{ secrets.DOMAIN }}" >> src/main/resources/config.properties
+            echo "storeURL=${{ secrets.STORE_URL }}" >> src/main/resources/config.properties
+            echo "headless=${{ secrets.HEADLESS }}" >> src/main/resources/config.properties
+            echo "enableProxy=false" >> src/main/resources/config.properties
+            chmod 600 src/main/resources/config.properties
+            mvn test "-DsuiteFile=test_configs/web/seller/update_product.xml"
 
   Dashboard-ProductManagement:
+    runs-on: ubuntu-latest
     needs:
-#      - Dashboard-CreateProduct
+      - Dashboard-CreateProduct
       - Dashboard-UpdateProduct
 
-    runs-on: ubuntu-latest
     if: always()
     steps:
       - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
         with:
           artifact: "ClonedRepo"
           test_name: "Dashboard-ProductManagement"
-          test_config: "test_config/web/dashboard/product/productManagementTest.xml"
-  #      branch_name: "GoSELL-Thang"
-
-  Storefront-ProductDetail:
-    needs: Get-SourceCode
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
-        with:
-          artifact: "ClonedRepo"
-          test_name: "Storefront-ProductDetail"
-          test_config: "test_config/web/storefront/product_detail/productDetail.xml"
-  #      branch_name: "GoSELL-Thang"
-
-#  Android-GoSELLER-CreateProduct:
-#    needs: Get-SourceCode
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: ThangNguyen0495/execute-appium-android-test@v1.0.0
-#        with:
-#          artifact: "ClonedRepo"
-#          test_name: "Android-GoSELLER-CreateProduct"
-#          test_config: "test_config/android/seller/createProductTest.xml"
-#  #      branch_name: "GoSELL-Thang"
-
-  Android-GoSELLER-UpdateProduct:
-    needs: Get-SourceCode
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ThangNguyen0495/execute-appium-android-test@v1.0.0
-        with:
-          artifact: "ClonedRepo"
-          test_name: "Android-GoSELLER-UpdateProduct"
-          test_config: "test_config/android/seller/editProductTest.xml"
-  #      branch_name: "GoSELL-Thang"
-
-#  Android-GoSELLER-ProductManagement:
-#    needs:
-#      - Android-GoSELLER-CreateProduct
-#      - Android-GoSELLER-UpdateProduct
-#    if: always()
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: ThangNguyen0495/execute-appium-android-test@v1.0.0
-#        with:
-#          artifact: "ClonedRepo"
-#          test_name: "Android-GoSELLER-ProductManagement"
-#          test_config: "test_config/android/seller/productManagementTest.xml"
-#  #      branch_name: "GoSELL-Thang"
-
-  Android-GoBUYER-ProductDetail:
-    needs: Get-SourceCode
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ThangNguyen0495/execute-appium-android-test@v1.0.0
-        with:
-          artifact: "ClonedRepo"
-          test_name: "Android-GoBUYER-ProductDetail"
-          test_config: "test_config/android/buyer/productDetail.xml"
-  #      branch_name: "GoSELL-Thang"
-
-  IOS-GoSELLER-CreateProduct:
-    needs: Get-SourceCode
-    runs-on: macos-latest
-    steps:
-      - uses: ThangNguyen0495/execute-appium-ios-test@v1.0.0
-        with:
-          artifact: "ClonedRepo"
-          test_name: "IOS-GoSELLER-CreateProduct"
-          test_config: "test_config/iOS/seller/createProductTest.xml"
-  #      branch_name: "GoSELL-Thang"
-
-  IOS-GoSELLER-UpdateProduct:
-    needs: Get-SourceCode
-    if: always()
-    runs-on: macos-latest
-    steps:
-      - uses: ThangNguyen0495/execute-appium-ios-test@v1.0.0
-        with:
-          artifact: "ClonedRepo"
-          test_name: "IOS-GoSELLER-UpdateProduct"
-          test_config: "test_config/iOS/seller/editProductTest.xml"
-#          branch_name: "GoSELL-Thang"
-
-#  IOS-GoSELLER-ProductManagement:
-#    needs:
-#      - IOS-GoSELLER-CreateProduct
-#      - IOS-GoSELLER-UpdateProduct
-#    if: always()
-#    runs-on: macos-latest
-#    steps:
-#      - uses: ThangNguyen0495/execute-appium-ios-test@v1.0.0
-#        with:
-#          artifact: "ClonedRepo"
-#          test_name: "IOS-GoSELLER-ProductManagement"
-#          test_config: "test_config/iOS/seller/productManagementTest.xml"
-#  #      branch_name: "GoSELL-Thang"
-
-  IOS-GoBUYER-ProductDetail:
-    needs: Get-SourceCode
-    runs-on: macos-latest
-    steps:
-      - uses: ThangNguyen0495/execute-appium-ios-test@v1.0.0
-        with:
-          artifact: "ClonedRepo"
-          test_name: "IOS-GoBUYER-ProductDetail"
-          test_config: "test_config/iOS/buyer/productDetail.xml"
-  #      branch_name: "GoSELL-Thang"
-
+          scripts: |
+            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
+            echo "buyerAccount=${{ secrets.BUYER_ACCOUNT }}" > src/main/resources/config.properties
+            echo "buyerPassword=${{ secrets.BUYER_PASSWORD }}" >> src/main/resources/config.properties
+            echo "sellerAccount=${{ secrets.SELLER_ACCOUNT }}" >> src/main/resources/config.properties
+            echo "sellerPassword=${{ secrets.SELLER_PASSWORD }}" >> src/main/resources/config.properties
+            echo "apiHost=${{ secrets.API_HOST }}" >> src/main/resources/config.properties
+            echo "browser=${{ secrets.BROWSER }}" >> src/main/resources/config.properties
+            echo "domain=${{ secrets.DOMAIN }}" >> src/main/resources/config.properties
+            echo "storeURL=${{ secrets.STORE_URL }}" >> src/main/resources/config.properties
+            echo "headless=${{ secrets.HEADLESS }}" >> src/main/resources/config.properties
+            echo "enableProxy=false" >> src/main/resources/config.properties
+            chmod 600 src/main/resources/config.properties
+            mvn test "-DsuiteFile=test_configs/web/seller/product_management.xml"
+  
+  #  Storefront-ProductDetail:
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
+  #        with:
+  #          artifact: "ClonedRepo"
+  #          test_name: "Storefront-ProductDetail"
+  #          scripts: |
+  #            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
+  #            echo "buyerAccount=${{ secrets.BUYER_ACCOUNT }}" > src/main/resources/config.properties
+  #            echo "buyerPassword=${{ secrets.BUYER_PASSWORD }}" >> src/main/resources/config.properties
+  #            echo "sellerAccount=${{ secrets.SELLER_ACCOUNT }}" >> src/main/resources/config.properties
+  #            echo "sellerPassword=${{ secrets.SELLER_PASSWORD }}" >> src/main/resources/config.properties
+  #            echo "apiHost=${{ secrets.API_HOST }}" >> src/main/resources/config.properties
+  #            echo "browser=${{ secrets.BROWSER }}" >> src/main/resources/config.properties
+  #            echo "domain=${{ secrets.DOMAIN }}" >> src/main/resources/config.properties
+  #            echo "storeURL=${{ secrets.STORE_URL }}" >> src/main/resources/config.properties
+  #            echo "headless=${{ secrets.HEADLESS }}" >> src/main/resources/config.properties
+  #            echo "enableProxy=false" >> src/main/resources/config.properties
+  #            chmod 600 src/main/resources/config.properties
+  #            mvn test "-DsuiteFile=test_configs/web/buyer/product_detail.xml"
 
   CleanJob:
     runs-on: ubuntu-20.04
     needs:
       - Dashboard-ProductManagement
-      - Storefront-ProductDetail
-#      - Android-GoSELLER-ProductManagement
-      - Android-GoBUYER-ProductDetail
-#      - IOS-GoSELLER-ProductManagement
-#      - IOS-GoBUYER-ProductDetail
-      - IOS-GoSELLER-UpdateProduct
-      - IOS-GoSELLER-UpdateProduct
 
     if: always()
     steps:
@@ -193,4 +171,3 @@ jobs:
         uses: geekyeggo/delete-artifact@v5
         with:
           name: ClonedRepo
-
