@@ -163,6 +163,7 @@ jobs:
   CleanJob:
     runs-on: ubuntu-20.04
     needs:
+      - Dashboard-Login
       - Dashboard-ProductManagement
 
     if: always()
