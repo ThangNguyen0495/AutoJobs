@@ -40,7 +40,7 @@ jobs:
 #    needs: Web
     runs-on: macos-latest
     steps:
-      - uses: ThangNguyen0495/Customs@iosv1.0.0
+      - uses: ThangNguyen0495/Customs@iosv1.0.1
 #
 #  Dashboard-Login:
 #    needs: Dashboard
