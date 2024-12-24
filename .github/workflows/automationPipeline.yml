@@ -42,11 +42,13 @@ jobs:
 
 
       - name: Retrieve iOS Simulator UDID
-        uses: ThangNguyen0495/Customs@iosv1.0.2
+        uses: ThangNguyen0495/Customs@iosv1.0.3
         id: retrieve_udid
 
       - name: Use the iOS Simulator UDID
-        run: echo "The iOS Simulator UDID is ${{ steps.retrieve_udid.outputs.simulator_udid }}"
+        run: |
+          UDID=$(cat udid.txt)
+          echo "The iOS Simulator UDID is $UDID"
 
 
 
