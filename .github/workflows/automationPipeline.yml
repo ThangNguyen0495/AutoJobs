@@ -22,154 +22,154 @@ jobs:
   #      VPN_PASSWORD: ${{ secrets.VPN_PASSWORD }}
   #      GIT_REPO: ${{ secrets.GIT_REPO }}
 
-  Get-SourceCode:
-    uses: SMTG-04/Reusable/.github/workflows/cloneGitConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      local_repo: "ThangNguyen0495/RefactorGS"
-    secrets:
-      PAT: ${{ secrets.PAT }}
-
-  Web:
-    needs: Get-SourceCode
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Check web feature"
+#  Get-SourceCode:
+#    uses: SMTG-04/Reusable/.github/workflows/cloneGitConfigs.yml@main
+#    with:
+#      artifact: "ClonedRepo"
+#      local_repo: "ThangNguyen0495/RefactorGS"
+#    secrets:
+#      PAT: ${{ secrets.PAT }}
+#
+#  Web:
+#    needs: Get-SourceCode
+#    runs-on: ubuntu-latest
+#    steps:
+#      - run: echo "Check web feature"
 
   Dashboard:
-    needs: Web
-    runs-on: ubuntu-latest
+#    needs: Web
+    runs-on: macos-latest
     steps:
-      - run: echo "Verify dashboard feature"
-  
-  Dashboard-Login:
-    needs: Dashboard
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
-        with:
-          artifact: "ClonedRepo"
-          test_name: "Dashboard-Login"
-          scripts: |
-            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
-            echo "buyerAccount=${{ secrets.BUYER_ACCOUNT }}" > src/main/resources/config.properties
-            echo "buyerPassword=${{ secrets.BUYER_PASSWORD }}" >> src/main/resources/config.properties
-            echo "sellerAccount=${{ secrets.SELLER_ACCOUNT }}" >> src/main/resources/config.properties
-            echo "sellerPassword=${{ secrets.SELLER_PASSWORD }}" >> src/main/resources/config.properties
-            echo "apiHost=${{ secrets.API_HOST }}" >> src/main/resources/config.properties
-            echo "browser=${{ secrets.BROWSER }}" >> src/main/resources/config.properties
-            echo "domain=${{ secrets.DOMAIN }}" >> src/main/resources/config.properties
-            echo "storeURL=${{ secrets.STORE_URL }}" >> src/main/resources/config.properties
-            echo "headless=${{ secrets.HEADLESS }}" >> src/main/resources/config.properties
-            echo "enableProxy=false" >> src/main/resources/config.properties
-            chmod 600 src/main/resources/config.properties
-            mvn test "-DsuiteFile=test_configs/web/seller/loginTest.xml"
-
-  Dashboard-CreateProduct:
-    needs: Dashboard
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
-        with:
-          artifact: "ClonedRepo"
-          test_name: "Dashboard-CreateProduct"
-          scripts: |
-            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
-            echo "buyerAccount=${{ secrets.BUYER_ACCOUNT }}" > src/main/resources/config.properties
-            echo "buyerPassword=${{ secrets.BUYER_PASSWORD }}" >> src/main/resources/config.properties
-            echo "sellerAccount=${{ secrets.SELLER_ACCOUNT }}" >> src/main/resources/config.properties
-            echo "sellerPassword=${{ secrets.SELLER_PASSWORD }}" >> src/main/resources/config.properties
-            echo "apiHost=${{ secrets.API_HOST }}" >> src/main/resources/config.properties
-            echo "browser=${{ secrets.BROWSER }}" >> src/main/resources/config.properties
-            echo "domain=${{ secrets.DOMAIN }}" >> src/main/resources/config.properties
-            echo "storeURL=${{ secrets.STORE_URL }}" >> src/main/resources/config.properties
-            echo "headless=${{ secrets.HEADLESS }}" >> src/main/resources/config.properties
-            echo "enableProxy=false" >> src/main/resources/config.properties
-            chmod 600 src/main/resources/config.properties
-            mvn test "-DsuiteFile=test_configs/web/seller/create_product.xml"
-
-  Dashboard-UpdateProduct:
-    needs: Dashboard
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
-        with:
-          artifact: "ClonedRepo"
-          test_name: "Dashboard-UpdateProduct"
-          scripts: |
-            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
-            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
-            echo "buyerAccount=${{ secrets.BUYER_ACCOUNT }}" > src/main/resources/config.properties
-            echo "buyerPassword=${{ secrets.BUYER_PASSWORD }}" >> src/main/resources/config.properties
-            echo "sellerAccount=${{ secrets.SELLER_ACCOUNT }}" >> src/main/resources/config.properties
-            echo "sellerPassword=${{ secrets.SELLER_PASSWORD }}" >> src/main/resources/config.properties
-            echo "apiHost=${{ secrets.API_HOST }}" >> src/main/resources/config.properties
-            echo "browser=${{ secrets.BROWSER }}" >> src/main/resources/config.properties
-            echo "domain=${{ secrets.DOMAIN }}" >> src/main/resources/config.properties
-            echo "storeURL=${{ secrets.STORE_URL }}" >> src/main/resources/config.properties
-            echo "headless=${{ secrets.HEADLESS }}" >> src/main/resources/config.properties
-            echo "enableProxy=false" >> src/main/resources/config.properties
-            chmod 600 src/main/resources/config.properties
-            mvn test "-DsuiteFile=test_configs/web/seller/update_product.xml"
-
-  Dashboard-ProductManagement:
-    runs-on: ubuntu-latest
-    needs:
-      - Dashboard-CreateProduct
-      - Dashboard-UpdateProduct
-
-    if: always()
-    steps:
-      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
-        with:
-          artifact: "ClonedRepo"
-          test_name: "Dashboard-ProductManagement"
-          scripts: |
-            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
-            echo "buyerAccount=${{ secrets.BUYER_ACCOUNT }}" > src/main/resources/config.properties
-            echo "buyerPassword=${{ secrets.BUYER_PASSWORD }}" >> src/main/resources/config.properties
-            echo "sellerAccount=${{ secrets.SELLER_ACCOUNT }}" >> src/main/resources/config.properties
-            echo "sellerPassword=${{ secrets.SELLER_PASSWORD }}" >> src/main/resources/config.properties
-            echo "apiHost=${{ secrets.API_HOST }}" >> src/main/resources/config.properties
-            echo "browser=${{ secrets.BROWSER }}" >> src/main/resources/config.properties
-            echo "domain=${{ secrets.DOMAIN }}" >> src/main/resources/config.properties
-            echo "storeURL=${{ secrets.STORE_URL }}" >> src/main/resources/config.properties
-            echo "headless=${{ secrets.HEADLESS }}" >> src/main/resources/config.properties
-            echo "enableProxy=false" >> src/main/resources/config.properties
-            chmod 600 src/main/resources/config.properties
-            mvn test "-DsuiteFile=test_configs/web/seller/product_management.xml"
-  
-  #  Storefront-ProductDetail:
-  #    runs-on: ubuntu-latest
-  #    steps:
-  #      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
-  #        with:
-  #          artifact: "ClonedRepo"
-  #          test_name: "Storefront-ProductDetail"
-  #          scripts: |
-  #            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
-  #            echo "buyerAccount=${{ secrets.BUYER_ACCOUNT }}" > src/main/resources/config.properties
-  #            echo "buyerPassword=${{ secrets.BUYER_PASSWORD }}" >> src/main/resources/config.properties
-  #            echo "sellerAccount=${{ secrets.SELLER_ACCOUNT }}" >> src/main/resources/config.properties
-  #            echo "sellerPassword=${{ secrets.SELLER_PASSWORD }}" >> src/main/resources/config.properties
-  #            echo "apiHost=${{ secrets.API_HOST }}" >> src/main/resources/config.properties
-  #            echo "browser=${{ secrets.BROWSER }}" >> src/main/resources/config.properties
-  #            echo "domain=${{ secrets.DOMAIN }}" >> src/main/resources/config.properties
-  #            echo "storeURL=${{ secrets.STORE_URL }}" >> src/main/resources/config.properties
-  #            echo "headless=${{ secrets.HEADLESS }}" >> src/main/resources/config.properties
-  #            echo "enableProxy=false" >> src/main/resources/config.properties
-  #            chmod 600 src/main/resources/config.properties
-  #            mvn test "-DsuiteFile=test_configs/web/buyer/product_detail.xml"
-
-  CleanJob:
-    runs-on: ubuntu-20.04
-    needs:
-      - Dashboard-ProductManagement
-      - Dashboard-Login
-
-    if: always()
-    steps:
-      - name: Delete clone repository
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: ClonedRepo
+      - uses: ThangNguyen0495/Customs@iosv1.0.0
+#
+#  Dashboard-Login:
+#    needs: Dashboard
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
+#        with:
+#          artifact: "ClonedRepo"
+#          test_name: "Dashboard-Login"
+#          scripts: |
+#            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
+#            echo "buyerAccount=${{ secrets.BUYER_ACCOUNT }}" > src/main/resources/config.properties
+#            echo "buyerPassword=${{ secrets.BUYER_PASSWORD }}" >> src/main/resources/config.properties
+#            echo "sellerAccount=${{ secrets.SELLER_ACCOUNT }}" >> src/main/resources/config.properties
+#            echo "sellerPassword=${{ secrets.SELLER_PASSWORD }}" >> src/main/resources/config.properties
+#            echo "apiHost=${{ secrets.API_HOST }}" >> src/main/resources/config.properties
+#            echo "browser=${{ secrets.BROWSER }}" >> src/main/resources/config.properties
+#            echo "domain=${{ secrets.DOMAIN }}" >> src/main/resources/config.properties
+#            echo "storeURL=${{ secrets.STORE_URL }}" >> src/main/resources/config.properties
+#            echo "headless=${{ secrets.HEADLESS }}" >> src/main/resources/config.properties
+#            echo "enableProxy=false" >> src/main/resources/config.properties
+#            chmod 600 src/main/resources/config.properties
+#            mvn test "-DsuiteFile=test_configs/web/seller/loginTest.xml"
+#
+#  Dashboard-CreateProduct:
+#    needs: Dashboard
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
+#        with:
+#          artifact: "ClonedRepo"
+#          test_name: "Dashboard-CreateProduct"
+#          scripts: |
+#            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
+#            echo "buyerAccount=${{ secrets.BUYER_ACCOUNT }}" > src/main/resources/config.properties
+#            echo "buyerPassword=${{ secrets.BUYER_PASSWORD }}" >> src/main/resources/config.properties
+#            echo "sellerAccount=${{ secrets.SELLER_ACCOUNT }}" >> src/main/resources/config.properties
+#            echo "sellerPassword=${{ secrets.SELLER_PASSWORD }}" >> src/main/resources/config.properties
+#            echo "apiHost=${{ secrets.API_HOST }}" >> src/main/resources/config.properties
+#            echo "browser=${{ secrets.BROWSER }}" >> src/main/resources/config.properties
+#            echo "domain=${{ secrets.DOMAIN }}" >> src/main/resources/config.properties
+#            echo "storeURL=${{ secrets.STORE_URL }}" >> src/main/resources/config.properties
+#            echo "headless=${{ secrets.HEADLESS }}" >> src/main/resources/config.properties
+#            echo "enableProxy=false" >> src/main/resources/config.properties
+#            chmod 600 src/main/resources/config.properties
+#            mvn test "-DsuiteFile=test_configs/web/seller/create_product.xml"
+#
+#  Dashboard-UpdateProduct:
+#    needs: Dashboard
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
+#        with:
+#          artifact: "ClonedRepo"
+#          test_name: "Dashboard-UpdateProduct"
+#          scripts: |
+#            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
+#            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
+#            echo "buyerAccount=${{ secrets.BUYER_ACCOUNT }}" > src/main/resources/config.properties
+#            echo "buyerPassword=${{ secrets.BUYER_PASSWORD }}" >> src/main/resources/config.properties
+#            echo "sellerAccount=${{ secrets.SELLER_ACCOUNT }}" >> src/main/resources/config.properties
+#            echo "sellerPassword=${{ secrets.SELLER_PASSWORD }}" >> src/main/resources/config.properties
+#            echo "apiHost=${{ secrets.API_HOST }}" >> src/main/resources/config.properties
+#            echo "browser=${{ secrets.BROWSER }}" >> src/main/resources/config.properties
+#            echo "domain=${{ secrets.DOMAIN }}" >> src/main/resources/config.properties
+#            echo "storeURL=${{ secrets.STORE_URL }}" >> src/main/resources/config.properties
+#            echo "headless=${{ secrets.HEADLESS }}" >> src/main/resources/config.properties
+#            echo "enableProxy=false" >> src/main/resources/config.properties
+#            chmod 600 src/main/resources/config.properties
+#            mvn test "-DsuiteFile=test_configs/web/seller/update_product.xml"
+#
+#  Dashboard-ProductManagement:
+#    runs-on: ubuntu-latest
+#    needs:
+#      - Dashboard-CreateProduct
+#      - Dashboard-UpdateProduct
+#
+#    if: always()
+#    steps:
+#      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
+#        with:
+#          artifact: "ClonedRepo"
+#          test_name: "Dashboard-ProductManagement"
+#          scripts: |
+#            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
+#            echo "buyerAccount=${{ secrets.BUYER_ACCOUNT }}" > src/main/resources/config.properties
+#            echo "buyerPassword=${{ secrets.BUYER_PASSWORD }}" >> src/main/resources/config.properties
+#            echo "sellerAccount=${{ secrets.SELLER_ACCOUNT }}" >> src/main/resources/config.properties
+#            echo "sellerPassword=${{ secrets.SELLER_PASSWORD }}" >> src/main/resources/config.properties
+#            echo "apiHost=${{ secrets.API_HOST }}" >> src/main/resources/config.properties
+#            echo "browser=${{ secrets.BROWSER }}" >> src/main/resources/config.properties
+#            echo "domain=${{ secrets.DOMAIN }}" >> src/main/resources/config.properties
+#            echo "storeURL=${{ secrets.STORE_URL }}" >> src/main/resources/config.properties
+#            echo "headless=${{ secrets.HEADLESS }}" >> src/main/resources/config.properties
+#            echo "enableProxy=false" >> src/main/resources/config.properties
+#            chmod 600 src/main/resources/config.properties
+#            mvn test "-DsuiteFile=test_configs/web/seller/product_management.xml"
+#
+#  #  Storefront-ProductDetail:
+#  #    runs-on: ubuntu-latest
+#  #    steps:
+#  #      - uses: ThangNguyen0495/execute-selenium-test@v1.0.0
+#  #        with:
+#  #          artifact: "ClonedRepo"
+#  #          test_name: "Storefront-ProductDetail"
+#  #          scripts: |
+#  #            echo "buyerAccount=${{ secrets.ENV }}" > src/main/resources/config.properties
+#  #            echo "buyerAccount=${{ secrets.BUYER_ACCOUNT }}" > src/main/resources/config.properties
+#  #            echo "buyerPassword=${{ secrets.BUYER_PASSWORD }}" >> src/main/resources/config.properties
+#  #            echo "sellerAccount=${{ secrets.SELLER_ACCOUNT }}" >> src/main/resources/config.properties
+#  #            echo "sellerPassword=${{ secrets.SELLER_PASSWORD }}" >> src/main/resources/config.properties
+#  #            echo "apiHost=${{ secrets.API_HOST }}" >> src/main/resources/config.properties
+#  #            echo "browser=${{ secrets.BROWSER }}" >> src/main/resources/config.properties
+#  #            echo "domain=${{ secrets.DOMAIN }}" >> src/main/resources/config.properties
+#  #            echo "storeURL=${{ secrets.STORE_URL }}" >> src/main/resources/config.properties
+#  #            echo "headless=${{ secrets.HEADLESS }}" >> src/main/resources/config.properties
+#  #            echo "enableProxy=false" >> src/main/resources/config.properties
+#  #            chmod 600 src/main/resources/config.properties
+#  #            mvn test "-DsuiteFile=test_configs/web/buyer/product_detail.xml"
+#
+#  CleanJob:
+#    runs-on: ubuntu-20.04
+#    needs:
+#      - Dashboard-ProductManagement
+#      - Dashboard-Login
+#
+#    if: always()
+#    steps:
+#      - name: Delete clone repository
+#        uses: geekyeggo/delete-artifact@v5
+#        with:
+#          name: ClonedRepo
