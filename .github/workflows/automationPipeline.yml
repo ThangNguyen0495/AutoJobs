@@ -36,21 +36,18 @@ jobs:
 #    steps:
 #      - run: echo "Check web feature"
 
+  ios_simulator_job:
+    runs-on: macos-latest
+    steps:
 
-    ios_simulator_job:
-      runs-on: macos-latest
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v3
 
-        - name: Retrieve iOS Simulator UDID
-          uses: ThangNguyen0495/Customs@iosv1.0.1
+      - name: Retrieve iOS Simulator UDID
+        uses: ThangNguyen0495/Customs@iosv1.0.2
+        id: retrieve_udid
 
-        - name: Debug Environment Variables
-          run: env | grep SIMULATOR_UDID
+      - name: Use the iOS Simulator UDID
+        run: echo "The iOS Simulator UDID is ${{ steps.retrieve_udid.outputs.simulator_udid }}"
 
-        - name: Use iOS Simulator UDID
-          run: echo "The iOS Simulator UDID is $SIMULATOR_UDID"
 
 
 #
