@@ -41,6 +41,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: ThangNguyen0495/Customs@iosv1.0.1
+      - name: Use iOS Simulator UDID
+        run: echo "The iOS Simulator UDID is $SIMULATOR_UDID"
 #
 #  Dashboard-Login:
 #    needs: Dashboard
