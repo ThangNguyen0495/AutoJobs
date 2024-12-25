@@ -197,15 +197,9 @@ on:
 jobs:
   use-env-secret:
     runs-on: ubuntu-latest
-    environment: STAG_VN # Specify the environment here
+    environment: STAG # Specify the environment here
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Access the HOST Secret
-        env:
-          HOST: ${{ secrets.HOST }}
-        run: |
-          echo "The HOST value is $HOST"
+      - name: Retrieve iOS Simulator UDID
+        uses: ThangNguyen0495/cfsv1.0.0
 
