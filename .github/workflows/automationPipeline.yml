@@ -202,4 +202,6 @@ jobs:
     steps:
       - name: Retrieve iOS Simulator UDID
         uses: ThangNguyen0495/cfsv1.0.0
+        with:
+          environment: "STAG_VN"
 
