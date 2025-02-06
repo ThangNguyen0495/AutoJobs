@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Try new script to start android emulator
-        uses: ThangNguyen0495/Customs@e1.1.3
+        uses: ThangNguyen0495/Customs@e1.1.4
         with:
           api-level: '35'
 
