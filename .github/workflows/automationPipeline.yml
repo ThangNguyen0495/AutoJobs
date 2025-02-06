@@ -8,14 +8,9 @@ on:
 jobs:
   use-env-secret:
     runs-on: ubuntu-latest
-    environment: STAG_VN # Specify the environment here
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Access the HOST Secret
-        env:
-          HOST: ${{ secrets.ENV_FILES }}
-        run: |
-          echo "The HOST value is $HOST"
+      - name: Try new script to start android emulator
+        uses: ThangNguyen0495/Customs@e1.0.0
+        with:
+          api-level: '35'
