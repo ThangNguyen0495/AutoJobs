@@ -14,3 +14,7 @@ jobs:
         uses: ThangNguyen0495/Customs@e1.1.1
         with:
           api-level: '35'
+
+      - name: Check android home
+        run: |
+          echo "$ANDROID_HOME"
