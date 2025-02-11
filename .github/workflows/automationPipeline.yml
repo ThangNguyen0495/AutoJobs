@@ -11,10 +11,6 @@ jobs:
 
     steps:
       - name: Try new script to start android emulator
-        uses: ThangNguyen0495/Customs@e1.1.5
+        uses: ThangNguyen0495/Customs@main
         with:
           api-level: '35'
-
-      - name: Check android home
-        run: |
-          echo "$ANDROID_HOME"
