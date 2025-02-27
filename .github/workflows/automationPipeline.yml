@@ -9,9 +9,14 @@ on:
 jobs:
   use-env-secret:
     runs-on: ubuntu-latest
+    environment: STAG_VN
 
     steps:
-      - name: Try new script to start android emulator
-        uses: ThangNguyen0495/Customs@main
-        with:
-          api-level: '35'
+      # - name: Try new script to start android emulator
+      #   uses: ThangNguyen0495/Customs@main
+      #   with:
+      #     api-level: '35'
+      - name: verify env variable configs
+        run: |
+          echo "${{ vars.APP_URL }}"
+        
