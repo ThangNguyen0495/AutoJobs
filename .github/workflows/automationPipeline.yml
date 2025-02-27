@@ -19,4 +19,5 @@ jobs:
       - name: verify env variable configs
         run: |
           echo "${{ vars.APP_URL }}"
+          echo "${{ vars.COMMON_VARIABLE }}"
         
