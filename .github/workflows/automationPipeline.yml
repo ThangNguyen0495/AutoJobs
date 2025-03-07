@@ -4,23 +4,16 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Select environment'
+        description: "Select environment"
         required: true
-        default: 'staging'
-        type: choice
-        options:
-          - staging
-          - production
-      testType:
-        description: 'Test type (comma-separated)'
-        required: true
-        default: 'smoke,regression'
+        default: "staging"
 
-run-name: "Automation Pipeline - ${{ github.event.inputs.environment }} - ${{ github.event.inputs.testType }}"
+run-name: "Automation Pipeline - ${{ github.event.inputs.environment }}"  # ✅ Changes the workflow name
 
 jobs:
   run-tests:
+    name: Run Tests  # Still static
     runs-on: ubuntu-latest
     steps:
-      - name: Run Tests
-        run: echo "Running tests in ${{ github.event.inputs.environment }} for ${{ github.event.inputs.testType }}"
+      - name: Running tests in ${{ github.event.inputs.environment }}
+        run: echo "Running tests in ${{ github.event.inputs.environment }}"
