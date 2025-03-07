@@ -8,7 +8,7 @@ on:
         required: true
         default: "staging"
 
-run-name: "Automation Pipeline - ${{ github.event.inputs.environment }}"  # ✅ Changes the workflow name
+run-name: "[${{ github.event.inputs.environment }}] Automation Pipeline"  # ✅ Changes the workflow name
 
 jobs:
   run-tests:
