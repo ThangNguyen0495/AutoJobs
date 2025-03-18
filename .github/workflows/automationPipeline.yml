@@ -2,7 +2,8 @@ name: Automation Pipeline
 
 on:
   push:
-    - main
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       environment:
