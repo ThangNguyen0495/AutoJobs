@@ -45,9 +45,11 @@ jobs:
 
       - name: Wait for Simulator to be ready
         run: |
+          DEVICE_NAME="iPhone 15"
           SIMULATOR_ID="${{ steps.find-simulator.outputs.simulator_id }}"
-          while ! xcrun simctl ui "$SIMULATOR_ID" status | grep -q 'Booted'; do
-            echo "Waiting for simulator $SIMULATOR_ID to boot..."
+          while ! xcrun simctl list devices | grep "$SIMULATOR_ID" | grep -q "Booted"; do
+            echo "Still waiting for the simulator to boot..."
+            xcrun simctl list devices available | grep -m 1 "$DEVICE_NAME"
             sleep 5
           done
-          echo "Simulator is now booted and ready!"
+          echo "Simulator $SIMULATOR_ID is now fully booted!"
