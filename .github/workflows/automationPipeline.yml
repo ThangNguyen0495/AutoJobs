@@ -1,22 +1,53 @@
-name: Automation Pipeline
+name: Find and Boot iOS Simulator
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: "Select environment"
-        required: true
-        default: "staging"
-
-run-name: "[${{ github.event.inputs.environment }}] Automation Pipeline"  # ✅ Changes the workflow name
 
 jobs:
-  run-tests:
-    name: Run Tests  # Still static
+  find-simulator:
     runs-on: macos-latest
+
     steps:
-      - name: Create an iOS simulator
-        uses: ThangNguyen0495/create-ios-simulator@main
+      - name: Set up Xcode
+        run: |
+          sudo xcode-select -s /Applications/Xcode.app
+
+      - name: List available simulators (optional)
+        run: xcrun simctl list
+
+      - name: Find iOS Simulator
+        id: find-simulator
+        run: |
+          DEVICE_NAME="iPhone 15"    # Replace with the desired simulator name
+          OS_VERSION="17.5"         # Replace with the desired iOS version
+
+          SIMULATOR_ID=$(xcrun simctl list devices | grep "$DEVICE_NAME" | grep "$OS_VERSION" | grep -i "Shutdown" | awk -F '[()]' '{print $2}' | head -n 1)
+
+          if [ -z "$SIMULATOR_ID" ]; then
+            echo "No simulator found for $DEVICE_NAME with iOS $OS_VERSION"
+            exit 1
+          fi
+
+          echo "Found simulator with ID: $SIMULATOR_ID"
+          echo "::set-output name=simulator_id::$SIMULATOR_ID"
+
+      - name: Boot the Simulator
+        run: |
+          SIMULATOR_ID="${{ steps.find-simulator.outputs.simulator_id }}"
+          if [ -n "$SIMULATOR_ID" ]; then
+            xcrun simctl boot "$SIMULATOR_ID"
+          else
+            echo "Simulator ID not found, cannot boot."
+            exit 1
+          fi
+
+      - name: Wait for Simulator to be ready
+        run: |
+          SIMULATOR_ID="${{ steps.find-simulator.outputs.simulator_id }}"
+          while ! xcrun simctl ui "$SIMULATOR_ID" status | grep -q 'Booted'; do
+            echo "Waiting for simulator $SIMULATOR_ID to boot..."
+            sleep 5
+          done
+          echo "Simulator is now booted and ready!"
