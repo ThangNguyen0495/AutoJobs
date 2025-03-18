@@ -1,55 +1,58 @@
-name: Find and Boot iOS Simulator
+name: 'IOS Appium Workflow Action'
 
 on:
   push:
-    branches:
-      - main
-
+    branches: main
 jobs:
-  find-simulator:
+  test_job:
     runs-on: macos-latest
-
     steps:
-      - name: Set up Xcode
+      - name: Get an available iOS simulator and boot it
+        uses: ThangNguyen0495/create-ios-simulator@main
+        
+      - name: Checkout code
+        uses: actions/checkout@v4
+  
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ inputs.java_version }}
+  
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ inputs.node_version }}
+  
+      - name: Install Appium
+        run: npm install -g appium > /dev/null 2>&1
+        
+  
+      - name: Install FFmpeg
+        run: brew install ffmpeg > /dev/null 2>&1
+        
+  
+      - name: Install Carthage
+        run: brew install carthage > /dev/null 2>&1
+  
+      - name: Install XCUITest driver
+        run: appium driver install xcuitest > /dev/null 2>&1
+
+      - name: Install WDA
         run: |
-          sudo xcode-select -s /Applications/Xcode.app
+          cd ~/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent
+          nohup xcodebuild test-without-building \
+            -project WebDriverAgent.xcodeproj \
+            -derivedDataPath wda_build \
+            -scheme WebDriverAgentRunner \
+            -destination "platform=iOS Simulator,name=$DEVICE_NAME" \
+            CODE_SIGNING_ALLOWED=NO > wda.log 2>&1 &
 
-      - name: List available simulators (optional)
-        run: xcrun simctl list
-
-      - name: Find iOS Simulator
-        id: find-simulator
+          cat wda.log
+      - name: Check installed app
         run: |
-          DEVICE_NAME="iPhone 15"    # Replace with the desired simulator name
-          OS_VERSION="iOS 17.5"         # Replace with the desired iOS version
+          xcrun simctl listapps booted
 
-          SIMULATOR_ID="$(xcrun simctl list devices available | grep "$DEVICE_NAME" | awk -F '[()]' '{print $2}' | head -n 1)"
-
-          if [ -z "$SIMULATOR_ID" ]; then
-            echo "No simulator found for $DEVICE_NAME with iOS $OS_VERSION"
-            exit 1
-          fi
-
-          echo "Found simulator with ID: $SIMULATOR_ID"
-          echo "::set-output name=simulator_id::$SIMULATOR_ID"
-
-      - name: Boot the Simulator
-        run: |
-          SIMULATOR_ID="${{ steps.find-simulator.outputs.simulator_id }}"
-          if [ -n "$SIMULATOR_ID" ]; then
-            xcrun simctl boot "$SIMULATOR_ID"
-          else
-            echo "Simulator ID not found, cannot boot."
-            exit 1
-          fi
-
-      - name: Wait for Simulator to be ready
-        run: |
-          DEVICE_NAME="iPhone 15"
-          SIMULATOR_ID="${{ steps.find-simulator.outputs.simulator_id }}"
-          while ! xcrun simctl list devices | grep "$SIMULATOR_ID" | grep -q "Booted"; do
-            echo "Still waiting for the simulator to boot..."
-            xcrun simctl list devices available | grep -m 1 "$DEVICE_NAME"
-            sleep 5
-          done
-          echo "Simulator $SIMULATOR_ID is now fully booted!"
+      # - name: Start Appium server
+      #   run: nohup appium -a 0.0.0.0 -p 4723 -pa /wd/hub --relaxed-security> appium_log.txt 2>&1 & > /dev/null 2>&1
+      
