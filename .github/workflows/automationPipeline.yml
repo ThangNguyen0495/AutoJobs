@@ -15,5 +15,5 @@ jobs:
     name: Run Tests  # Still static
     runs-on: ubuntu-latest
     steps:
-      - name: Running tests in ${{ github.event.inputs.environment }}
-        run: echo "Running tests in ${{ github.event.inputs.environment }}"
+      - name: Create an iOS simulator
+        uses: ThangNguyen0495/create-ios-simulator@main
