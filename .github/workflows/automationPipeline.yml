@@ -13,7 +13,7 @@ run-name: "[${{ github.event.inputs.environment }}] Automation Pipeline"  # ✅ 
 jobs:
   run-tests:
     name: Run Tests  # Still static
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Create an iOS simulator
         uses: ThangNguyen0495/create-ios-simulator@main
