@@ -23,7 +23,7 @@ jobs:
           DEVICE_NAME="iPhone 15"    # Replace with the desired simulator name
           OS_VERSION="iOS 17.5"         # Replace with the desired iOS version
 
-          SIMULATOR_ID=PHONE_ID="$(instruments -s devices | grep -m 1 '$DEVICE_NAME' | awk -F'[][]' '{print $2}')"
+          SIMULATOR_ID="$(instruments -s devices | grep -m 1 '$DEVICE_NAME' | awk -F'[][]' '{print $2}')"
 
           if [ -z "$SIMULATOR_ID" ]; then
             echo "No simulator found for $DEVICE_NAME with iOS $OS_VERSION"
