@@ -27,13 +27,41 @@ jobs:
       - name: Install Appium
         run: npm install -g appium > /dev/null 2>&1
         
-  
-      - name: Install FFmpeg
-        run: brew install ffmpeg > /dev/null 2>&1
-        
-  
-      - name: Install Carthage
-        run: brew install carthage > /dev/null 2>&1
+      - name: Cache Homebrew Packages
+        id: cache-brew
+        uses: actions/cache@v3
+        with:
+          path: |
+            /usr/local/Cellar
+            /opt/homebrew/Cellar
+          key: brew-${{ runner.os }}-${{ hashFiles('**/Brewfile') }}
+          restore-keys: |
+            brew-${{ runner.os }}-
+
+      - name: Install Homebrew (if missing)
+        run: |
+          if ! command -v brew &>/dev/null; then
+            echo "Installing Homebrew..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          else
+            echo "Homebrew already installed."
+          fi
+
+      - name: Install FFmpeg and Carthage (if not cached)
+        run: |
+          if ! brew list ffmpeg &>/dev/null; then
+            echo "Installing FFmpeg..."
+            brew install ffmpeg
+          else
+            echo "FFmpeg is already installed."
+          fi
+
+          if ! brew list carthage &>/dev/null; then
+            echo "Installing Carthage..."
+            brew install carthage
+          else
+            echo "Carthage is already installed."
+          fi
   
       - name: Install XCUITest driver
         run: appium driver install xcuitest > /dev/null 2>&1
