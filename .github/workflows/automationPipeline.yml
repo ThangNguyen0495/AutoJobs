@@ -21,7 +21,7 @@ jobs:
         id: find-simulator
         run: |
           DEVICE_NAME="iPhone 15"    # Replace with the desired simulator name
-          OS_VERSION="17.5"         # Replace with the desired iOS version
+          OS_VERSION="iOS 17.5"         # Replace with the desired iOS version
 
           SIMULATOR_ID=$(xcrun simctl list devices | grep "$DEVICE_NAME" | grep "$OS_VERSION" | grep -i "Shutdown" | awk -F '[()]' '{print $2}' | head -n 1)
 
