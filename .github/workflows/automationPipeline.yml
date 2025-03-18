@@ -17,12 +17,12 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: ${{ inputs.java_version }}
+          java-version: 22
   
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ inputs.node_version }}
+          node-version: 20
   
       - name: Install Appium
         run: npm install -g appium > /dev/null 2>&1
