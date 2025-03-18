@@ -1,6 +1,8 @@
 name: Automation Pipeline
 
 on:
+  push:
+    - main
   workflow_dispatch:
     inputs:
       environment:
