@@ -37,15 +37,21 @@ jobs:
           # Set simulator parameters and export them to the environment
           echo "DEVICE_NAME=iPhone 15" >> $GITHUB_ENV
           echo "OS_VERSION=17.5" >> $GITHUB_ENV
-
+          
+          # Load the environment variables
+          DEVICE_NAME="iPhone 15"
+          OS_VERSION="17.5"
+          
           echo "Searching for an available simulator: $DEVICE_NAME..."
           
           # Extract the UDID by filtering the list output
           DEVICE_UDID=$(xcrun simctl list devices | \
-            sed -n "/$OS_VERSION/,/^$/p" | \
-            grep -E "$DEVICE_NAME \(" | \
-            grep -oE '[A-Fa-f0-9-]{36}' | \
-            head -n 1 | tr -d '\n')
+          sed -n "/$OS_VERSION/,/^$/p" | \
+          grep -E "$DEVICE_NAME \(" | \
+          grep -oE '[A-Fa-f0-9-]{36}' | \
+          head -n 1 | tr -d '\n')
+          
+          echo "Found UDID: $DEVICE_UDID"
 
 
           if [[ -z "$DEVICE_UDID" ]]; then
