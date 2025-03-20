@@ -7,81 +7,24 @@ on:
     branches: [ main ]
 
 jobs:
-  ios-simulator:
+  setup-simulator:
     runs-on: macos-latest
+    outputs:
+      device_udid: ${{ steps.get_udid.outputs.udid }}
     steps:
-      - name: Install Xcode Command-Line Tools
+      - name: Start iOS Simulator
+        id: get_udid
         run: |
-          echo "Checking for Xcode command-line tools..."
-          if ! xcode-select --version &> /dev/null; then
-            echo "Installing Xcode command-line tools..."
-            xcode-select --install
-          else
-            echo "Xcode command-line tools already installed."
-          fi
-        shell: bash
+          UDID=$(xcrun simctl create "Test Device" "iPhone 14 Pro" "latest")
+          echo "Created simulator with UDID: $UDID"
+          echo "udid=$UDID" >> $GITHUB_ENV
+          echo "::set-output name=udid::$UDID"
 
-      - name: Set Xcode Version
+  run-tests:
+    runs-on: macos-latest
+    needs: setup-simulator  # Ensures this runs after the setup
+    steps:
+      - name: Use Existing Simulator
         run: |
-          echo "Setting Xcode version..."
-          sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
-          xcodebuild -version
-        shell: bash
-
-      - name: List Available Simulators (Before Creating)
-        run: xcrun simctl list devices
-        shell: bash
-
-      - name: Find Existing Simulator
-        run: |
-          # Set simulator parameters and export them to the environment
-          echo "DEVICE_NAME=iPhone 15" >> $GITHUB_ENV
-          echo "OS_VERSION=17.5" >> $GITHUB_ENV
-          
-          # Load the environment variables
-          DEVICE_NAME="iPhone 15"
-          OS_VERSION="17.5"
-          
-          echo "Searching for an available simulator: $DEVICE_NAME..."
-          
-          # Extract the UDID by filtering the list output
-          DEVICE_UDID=$(xcrun simctl list devices | \
-          sed -n "/$OS_VERSION/,/^$/p" | \
-          grep -E "$DEVICE_NAME \(" | \
-          grep -oE '[A-Fa-f0-9-]{36}' | \
-          head -n 1 | tr -d '\n')
-          
-          echo "Found UDID: $DEVICE_UDID"
-
-
-          if [[ -z "$DEVICE_UDID" ]]; then
-            echo "ERROR: No available simulator found for $DEVICE_NAME"
-            exit 1
-          fi
-
-          echo "Using existing simulator: $DEVICE_UDID"
-          
-          # Boot the found simulator
-          echo "Booting simulator $DEVICE_UDID..."
-          xcrun simctl boot "$DEVICE_UDID"
-
-          # Store UDID for later steps
-          echo "DEVICE_UDID=$DEVICE_UDID" >> $GITHUB_ENV
-        shell: bash
-
-      - name: Wait for Simulator to Boot
-        run: |
-          DEVICE_UDID="${{ env.DEVICE_UDID }}"
-          echo "Waiting for simulator ($DEVICE_UDID) to boot..."
-
-          while ! xcrun simctl list devices | grep "$DEVICE_UDID" | grep -q "Booted"; do
-            echo "Still waiting for the simulator to boot..."
-            sleep 5
-          done
-
-          echo "Simulator $DEVICE_UDID is now fully booted!"
-        shell: bash
-
-      - name: Verify Simulator is Running
-        run: xcrun simctl list devices | grep "Booted"
-        shell: bash
+          echo "Using simulator with UDID: ${{ needs.setup-simulator.outputs.device_udid }}"
+          xcrun simctl boot ${{ needs.setup-simulator.outputs.device_udid }}
