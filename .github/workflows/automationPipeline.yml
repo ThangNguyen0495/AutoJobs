@@ -15,10 +15,11 @@ jobs:
       - name: Start iOS Simulator
         id: get_udid
         run: |
-          UDID=$(xcrun simctl create "Test Device" "iPhone 14 Pro" "latest")
+          UDID=$(xcrun simctl create "Test Device" "iPhone 15 Pro" "com.apple.CoreSimulator.SimRuntime.iOS-17-5")
           echo "Created simulator with UDID: $UDID"
           echo "udid=$UDID" >> $GITHUB_ENV
           echo "::set-output name=udid::$UDID"
+
 
   run-tests:
     runs-on: macos-latest
