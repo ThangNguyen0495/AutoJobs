@@ -13,28 +13,29 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup tmate session (debugging - macOS)
+      - name: Check bash scripts
         run: |
           chmod +x ./start_appium_env.sh
           ./start_appium_env.sh "Iphone 15" 17-5
-#          brew install tmate
-#
-#          # Tạo session tmate mới (detached)
-#          tmate -S /tmp/tmate.sock new-session -d
-#          tmate -S /tmp/tmate.sock wait tmate-ready
-#
-#          # Lấy thông tin kết nối
-#          echo "✅ SSH connection string:"
-#          tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
-#
-#          echo "🌐 Web connection (read-only):"
-#          tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
-#
-#          echo "🕒 Session is active. Leave this running until you're done debugging."
-#
-#          # Giữ session sống
-#          while true; do sleep 30; done
-        
-
         continue-on-error: true
+
+      - name: Setup tmate session
+        run: |
+          brew install tmate
+
+          # Tạo session tmate mới (detached)
+          tmate -S /tmp/tmate.sock new-session -d
+          tmate -S /tmp/tmate.sock wait tmate-ready
+
+          # Lấy thông tin kết nối
+          echo "✅ SSH connection string:"
+          tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
+
+          echo "🌐 Web connection (read-only):"
+          tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
+
+          echo "🕒 Session is active. Leave this running until you're done debugging."
+
+          # Giữ session sống
+          while true; do sleep 30; done
 
