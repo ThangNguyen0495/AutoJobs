@@ -15,7 +15,7 @@ jobs:
           brew install tmux tmate
 
           # Tạo session tmate mới (detached)
-          tmate -S /tmp/tmate.sock new-session -d
+          tmate -S /tmp/tmate.sock new-session -d -x 200 -y 50
           tmate -S /tmp/tmate.sock wait tmate-ready
           
           # Lấy thông tin kết nối
