@@ -3,28 +3,13 @@
 set -e
 
 # Args
-JDK_VERSION="$1"
-NODE_VERSION="$2"
-SIM_NAME="$3"
-IOS_VERSION="$4"
+SIM_NAME="$1"
+IOS_VERSION="$2"
 
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
-
-echo "Installing JDK $JDK_VERSION..."
-brew install openjdk@$JDK_VERSION
-sudo ln -sfn /opt/homebrew/opt/openjdk@$JDK_VERSION/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-$JDK_VERSION.jdk
-export PATH="/opt/homebrew/opt/openjdk@$JDK_VERSION/bin:$PATH"
-
-echo -e "${GREEN}JDK $JDK_VERSION installed${NC}"
-
-echo "Installing Node.js $NODE_VERSION using n..."
-npm install -g n
-sudo n $NODE_VERSION
-
-echo -e "${GREEN}Node.js $NODE_VERSION installed${NC}"
 
 echo "Installing Appium..."
 npm install -g appium
