@@ -55,6 +55,7 @@ STABLE_COUNT=0
 REQUIRED_STABLE=5
 
 while kill -0 "$BUILD_PID" 2>/dev/null; do
+  sleep 10
   LINE_COUNT=$(wc -l < "$LOG_FILE")
 
   if [[ "$LINE_COUNT" -eq "$LAST_LINE_COUNT" ]]; then
