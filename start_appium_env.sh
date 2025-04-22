@@ -50,27 +50,10 @@ xcodebuild -project WebDriverAgent.xcodeproj \
 
 echo "Waiting for WebDriverAgent build to finish..."
 
-LAST_LINE_COUNT=0
-STABLE_COUNT=0
-REQUIRED_STABLE=5
-
-while kill -0 "$BUILD_PID" 2>/dev/null; do
+while ! grep -q "Test started" "$LOG_FILE"; do
   sleep 10
-  LINE_COUNT=$(wc -l < "$LOG_FILE")
-
-  if [[ "$LINE_COUNT" -eq "$LAST_LINE_COUNT" ]]; then
-    STABLE_COUNT=$((STABLE_COUNT + 1))
-  else
-    STABLE_COUNT=0
-    LAST_LINE_COUNT=$LINE_COUNT
-  fi
-
-  if [[ "$STABLE_COUNT" -ge "$REQUIRED_STABLE" ]]; then
-    break
-  fi
-
-  sleep 1
+  echo "Waiting for WebDriverAgent build to finish..."
 done
 
-echo "Build appears to be finished."
+echo "${GREEN} Build appears to be finished${NC}"
 tail -n 20 "$LOG_FILE"
