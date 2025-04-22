@@ -14,11 +14,11 @@ jobs:
         run: |
           brew install tmux tmate
 
+          # Tạo session tmate mới (detached)
           tmate -S /tmp/tmate.sock new-session -d
           tmate -S /tmp/tmate.sock wait tmate-ready
           
-          tmux resize-window -x 200 -y 50
-          
+          # Lấy thông tin kết nối
           echo "✅ SSH connection string:"
           tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
           
@@ -27,7 +27,9 @@ jobs:
           
           echo "🕒 Session is active. Leave this running until you're done debugging."
           
+          # Giữ session sống
           while true; do sleep 30; done
+        
 
         continue-on-error: true
 
