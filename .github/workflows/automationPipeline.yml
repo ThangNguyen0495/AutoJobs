@@ -14,20 +14,20 @@ jobs:
         run: |
           brew install tmux tmate
 
-          tmux new-session -d -s debug
-          tmux resize-window -t debug -x 200 -y 50
-
-          tmate -S /tmp/tmate.sock new-session -d -t debug
+          tmate -S /tmp/tmate.sock new-session -d
           tmate -S /tmp/tmate.sock wait tmate-ready
-
+          
+          tmux resize-window -x 200 -y 50
+          
           echo "✅ SSH connection string:"
           tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
-
+          
           echo "🌐 Web connection (read-only):"
           tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
-
+          
           echo "🕒 Session is active. Leave this running until you're done debugging."
-
+          
           while true; do sleep 30; done
+
         continue-on-error: true
 
