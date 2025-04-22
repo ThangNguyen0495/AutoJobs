@@ -10,13 +10,18 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Setup tmate session (debugging)
+      - name: Setup tmate session (debugging - macOS)
         run: |
           brew install tmate
-          tmate -S /tmp/tmate.sock new-session -d  # Start tmate in detached mode
+          tmate -S /tmp/tmate.sock new-session -d
           tmate -S /tmp/tmate.sock wait tmate-ready
-          echo "SSH connection string:"
+
+          echo "✅ SSH connection string:"
           tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
-          echo "Web connection:"
+
+          echo "🌐 Web connection (read-only):"
           tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
+
+          echo "🕒 Waiting for you to close the session (Ctrl+D or exit)..."
+          tmate -S /tmp/tmate.sock attach
         continue-on-error: true
