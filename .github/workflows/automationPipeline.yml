@@ -10,10 +10,13 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Start SSH session
-        uses: mxschmitt/action-tmate@v3
-        env:
-          TMATE_IDLE_MESSAGE: |
-            ⚠️ SSH Debugging Session Started
-            👉 SSH into the runner using the command above
-            💡 Type 'exit' to end the session and continue the workflow.r
+      - name: Setup tmate session (debugging)
+        run: |
+          brew install tmate
+          tmate -S /tmp/tmate.sock new-session -d  # Start tmate in detached mode
+          tmate -S /tmp/tmate.sock wait tmate-ready
+          echo "SSH connection string:"
+          tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
+          echo "Web connection:"
+          tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
+        continue-on-error: true
