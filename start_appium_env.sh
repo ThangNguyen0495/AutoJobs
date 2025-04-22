@@ -28,19 +28,8 @@ sleep 5
 
 echo -e "${GREEN}Appium started${NC}"
 
-echo "Finding simulator UDID for '$SIM_NAME' with iOS $IOS_VERSION..."
-UDID=$(xcrun simctl list devices | \
-          sed -n "/$IOS_VERSION/,/^$/p" | \
-          grep -E "$SIM_NAME \(" | \
-          grep -oE '[A-Fa-f0-9-]{36}' | \
-          head -n 1 | tr -d '\n')
-
-if [ -z "$UDID" ]; then
-  echo -e "${RED}Simulator not found. Check name and iOS version.${NC}"
-  exit 1
-fi
-
-echo -e "${GREEN}Found UDID: $UDID${NC}"
+echo "Creating simulator for '$SIM_NAME' with iOS $IOS_VERSION..."
+UDID=$(xcrun simctl create "$SIM_NAME" "com.apple.CoreSimulator.SimDeviceType.iPhone-15" "com.apple.CoreSimulator.SimRuntime.iOS-${IOS_VERSION}")
 
 echo "Booting simulator $SIM_NAME..."
 xcrun simctl boot "$UDID" || echo "(Simulator may already be booted)"
