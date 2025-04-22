@@ -50,7 +50,7 @@ xcodebuild -project WebDriverAgent.xcodeproj \
 
 echo "Waiting for WebDriverAgent build to finish..."
 
-while ! grep -q "Test started" "$LOG_FILE"; do
+while ! grep -q "WebDriverAgentRunner-Runner" "$LOG_FILE"; do
   sleep 10
   echo "Waiting for WebDriverAgent build to finish..."
 done
