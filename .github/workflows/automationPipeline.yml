@@ -7,14 +7,13 @@ on:
 
 jobs:
   use-env-secret:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
-      - name: Try new script to start android emulator
-        uses: ThangNguyen0495/Customs@e1.1.1
-        with:
-          api-level: '35'
-
-      - name: Check android home
-        run: |
-          echo "$ANDROID_HOME"
+      - name: Start SSH session
+        uses: mxschmitt/action-tmate@v3
+        env:
+          TMATE_IDLE_MESSAGE: |
+            ⚠️ SSH Debugging Session Started
+            👉 SSH into the runner using the command above
+            💡 Type 'exit' to end the session and continue the workflow.r
