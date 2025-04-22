@@ -15,13 +15,16 @@ jobs:
           brew install tmate
           tmate -S /tmp/tmate.sock new-session -d
           tmate -S /tmp/tmate.sock wait tmate-ready
-
+          
           echo "✅ SSH connection string:"
           tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
-
+          
           echo "🌐 Web connection (read-only):"
           tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
-
-          echo "🕒 Waiting for you to close the session (Ctrl+D or exit)..."
-          tmate -S /tmp/tmate.sock attach
+          
+          echo "🕒 Session is active. Leave this running until you're done debugging."
+          
+          # Keep session alive (use while loop or sleep)
+          while true; do sleep 30; done
         continue-on-error: true
+
