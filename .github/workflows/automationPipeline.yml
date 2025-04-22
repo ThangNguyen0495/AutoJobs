@@ -13,10 +13,9 @@ jobs:
       - name: Setup tmate session (debugging - macOS)
         run: |
           brew install tmate
-          tmux new-session -d -s debug
-          tmux resize-window -t debug -x 200 -y 50
           tmate -S /tmp/tmate.sock new-session -d
           tmate -S /tmp/tmate.sock wait tmate-ready
+          tmux resize-window -A
           
           echo "✅ SSH connection string:"
           tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
