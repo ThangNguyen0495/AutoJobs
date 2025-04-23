@@ -21,7 +21,8 @@ jobs:
             tmate -S /tmp/tmate.sock display -p "#{tmate_web}"
             echo "🕒 Session is active. Leave this running until you're done debugging."
             while true; do sleep 30; done
-            ' > /tmp/tmate.log 2>&1 &
+          ' > /tmp/tmate.log 2>&1 &
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -30,4 +31,3 @@ jobs:
           chmod +x ./start_appium_env.sh
           ./start_appium_env.sh
         continue-on-error: true
-
