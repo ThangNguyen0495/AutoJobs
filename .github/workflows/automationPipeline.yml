@@ -37,5 +37,12 @@ jobs:
           echo "🕒 Session is active. Leave this running until you're done debugging."
 
           # Giữ session sống
-          while true; do sleep 30; done
+          while true; do
+            # Check if "exit" input is given
+            read -t 30 input
+            if [[ "$input" == "exit" ]]; then
+              echo "🛑 Exiting due to user input..."
+              break
+            fi
+          done
 
