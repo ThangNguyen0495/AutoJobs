@@ -10,9 +10,9 @@ jobs:
     runs-on: macos-latest
 
     steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v4
-#
+      - name: Checkout code
+        uses: actions/checkout@v4
+
 #      - name: Check bash scripts
 #        run: |
 #          chmod +x ./start_appium_env.sh
