@@ -28,7 +28,7 @@ sleep 5
 echo -e "${GREEN}Appium started${NC}"
 
 echo "Find simulator for '$SIM_NAME' with iOS $IOS_VERSION..."
-UDID=$(xcrun simctl list devices | sed -n "/^-- ${IOS_VERSION} --/,/^$/p" | grep -i "${SIM_NAME} (" | grep -oE '[A-Fa-f0-9-]{36}' | head -n 1)
+UDID=$(xcrun simctl list devices | sed -n "/^-- iOS $IOS_VERSION --/,/^$/p" | grep -i "$SIM_NAME (" | grep -oE '[A-Fa-f0-9-]{36}' | head -n 1)
 echo -e "${GREEN}UDID: $UDID${NC}"
 
 echo "Booting simulator $SIM_NAME..."
