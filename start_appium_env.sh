@@ -3,8 +3,8 @@
 set -e
 
 # Args
-SIM_NAME="$1"
-IOS_VERSION="$2"
+SIM_NAME="$1:-iPhone 15"
+IOS_VERSION="$2:-17.5"
 
 # Colors
 GREEN='\033[0;32m'
@@ -27,8 +27,9 @@ sleep 5
 
 echo -e "${GREEN}Appium started${NC}"
 
-echo "Creating simulator for '$SIM_NAME' with iOS $IOS_VERSION..."
-UDID=$(xcrun simctl create "$SIM_NAME" "com.apple.CoreSimulator.SimDeviceType.iPhone-15" "com.apple.CoreSimulator.SimRuntime.iOS-${IOS_VERSION}")
+echo "Find simulator for '$SIM_NAME' with iOS $IOS_VERSION..."
+UDID=$(xcrun simctl list devices | sed -n "/^-- ${IOS_VERSION} --/,/^$/p" | grep -i "${SIM_NAME} (" | grep -oE '[A-Fa-f0-9-]{36}' | head -n 1)
+echo -e "${GREEN}UDID: $UDID${NC}"
 
 echo "Booting simulator $SIM_NAME..."
 xcrun simctl boot "$UDID" || echo "(Simulator may already be booted)"
