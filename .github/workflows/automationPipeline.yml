@@ -13,11 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check bash scripts
-        run: |
-          chmod +x ./start_appium_env.sh
-          ./start_appium_env.sh "iPhone 15" 17.5
-        continue-on-error: true
+#      - name: Check bash scripts
+#        run: |
+#          chmod +x ./start_appium_env.sh
+#          ./start_appium_env.sh "iPhone 15" 17.5
+#        continue-on-error: true
 
       - name: Setup tmate session
         run: |
