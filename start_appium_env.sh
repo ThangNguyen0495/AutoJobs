@@ -3,8 +3,8 @@
 set -e
 
 # Args
-SIM_NAME="$1:-iPhone 15"
-IOS_VERSION="$2:-17.5"
+SIM_NAME="$1:iPhone 15"
+IOS_VERSION="$2:17.5"
 
 # Colors
 GREEN='\033[0;32m'
