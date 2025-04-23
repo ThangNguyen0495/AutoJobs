@@ -22,27 +22,27 @@ jobs:
       - name: Setup tmate session
         run: |
           brew install tmate
-
-          # Tạo session tmate mới (detached)
+          
+          # Create a new detached tmate session
           tmate -S /tmp/tmate.sock new-session -d
           tmate -S /tmp/tmate.sock wait tmate-ready
-
-          # Lấy thông tin kết nối
+          
+          # Get connection details
           echo "✅ SSH connection string:"
           tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}'
-
+          
           echo "🌐 Web connection (read-only):"
           tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
-
+          
           echo "🕒 Session is active. Leave this running until you're done debugging."
-
-          # Giữ session sống
+          
+          # Keep session alive and check if the session is still running
           while true; do
-            # Check if "exit" input is given
-            read -t 30 input
-            if [[ "$input" == "exit" ]]; then
-              echo "🛑 Exiting due to user input..."
+            # Check if tmate session is still alive by checking the socket file
+            if ! tmux -L /tmp/tmate.sock has-session 2>/dev/null; then
+              echo "🛑 tmate session is no longer alive. Exiting..."
               break
             fi
+            sleep 30
           done
 
