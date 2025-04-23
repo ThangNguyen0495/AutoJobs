@@ -1,144 +1,78 @@
-#!/bin/bash
-
 set -e
 
-# Args
-SIM_NAME="${1:-iPhone 15}"
-IOS_VERSION="${2:-17.5}"
-NODE_VERSION="${3:-21}"
-JAVA_VERSION="${4:-22}"
+# Arguments
+SIM_NAME="${1:-iPhone 15}"       # Default simulator name
+IOS_VERSION="${2:-17.5}"         # Default iOS version
+JAVA_VERSION="${3:-22}"          # Default Java version
 
-# Colors
+# Colors for output
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-echo "[1/10] Install Homebrew"
+echo -e "${GREEN}[1/10] Checking Homebrew installation...${NC}"
 if ! command -v brew &> /dev/null; then
-  echo "Installing Homebrew..."
+  echo -e "${GREEN}Installing Homebrew...${NC}"
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else
-  echo "Homebrew already installed"
+  echo -e "${GREEN}Homebrew is already installed${NC}"
 fi
 
-echo "[2/10] Install Nodejs"
-# Function to compare versions
-# Returns 0 (true) if $1 >= $2
-version_ge() {
-  # Compare two versions and return true if the first is greater than or equal to the second
-  [ "$(echo -e "$1\n$2" | sort -V | head -n 1)" == "$2" ]
-}
+echo -e "${GREEN}[2/10] Reinstalling Node.js...${NC}"
+brew reinstall node
 
-# Check if Node.js is installed by Homebrew
-if ! brew list node >/dev/null 2>&1; then
-  echo "Node.js is not installed via Homebrew. Installing..."
-  brew install node
-else
-  CURRENT_VERSION=$(node -v | sed 's/v//')
-  echo "Node.js is already installed. Version: $CURRENT_VERSION"
+echo -e "${GREEN}[3/10] Installing Java via SDKMAN...${NC}"
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+sdk install java "$JAVA_VERSION"-open
+sdk use java "$JAVA_VERSION"-open
+echo -e "${GREEN}Java $JAVA_VERSION installed via SDKMAN${NC}"
 
-  if version_ge "$CURRENT_VERSION" "$NODE_VERSION"; then
-    echo "Node.js version is >= $NODE_VERSION. No need to reinstall."
-  else
-    echo "Node.js version is less than $NODE_VERSION. Upgrading..."
-    brew upgrade node
-  fi
-fi
+echo -e "${GREEN}[4/10] Installing Appium globally...${NC}"
+npm install -g appium
+echo -e "${GREEN}Appium installed${NC}"
 
+echo -e "${GREEN}[5/10] Installing Appium XCUITest driver...${NC}"
+appium driver install xcuitest
+echo -e "${GREEN}XCUITest driver installed${NC}"
 
-echo "[3/10] Install Java"
-# Function to set JAVA_HOME using installed JDK path
-set_java_home() {
-  JAVA_PATH=$(/usr/libexec/java_home)
-  echo "Setting JAVA_HOME to $JAVA_PATH"
-  export JAVA_HOME="$JAVA_PATH"
+echo -e "${GREEN}[6/10] Installing Carthage...${NC}"
+brew install carthage
+echo -e "${GREEN}Carthage installed${NC}"
 
-  # Ensure ~/.zshrc exists
-  if [ ! -f ~/.zshrc ]; then
-    # shellcheck disable=SC2088
-    echo "~/.zshrc not found. Creating it..."
-    touch ~/.zshrc
-  fi
+echo -e "${GREEN}[7/10] Starting Appium server in background...${NC}"
+nohup appium -a 0.0.0.0 -p 4723 -pa /wd/hub --relaxed-security > appium_log.txt 2>&1 &
+sleep 5
+echo -e "${GREEN}Appium server started${NC}"
 
-  # Add JAVA_HOME and PATH to ~/.zshrc
-  # shellcheck disable=SC2129
-  # shellcheck disable=SC2016
-  echo 'export JAVA_HOME=$(/usr/libexec/java_home)' >> ~/.zshrc
-  # shellcheck disable=SC2016
-  echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.zshrc
-  echo 'export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"' >> ~/.zshrc
-  # shellcheck disable=SC1090
-  source ~/.zshrc
-}
+echo -e "${GREEN}[8/10] Searching for simulator '$SIM_NAME' on iOS $IOS_VERSION...${NC}"
+UDID=$(xcrun simctl list devices | sed -n "/^-- iOS $IOS_VERSION --/,/^$/p" | grep -i "$SIM_NAME (" | grep -oE '[A-Fa-f0-9-]{36}' | head -n 1)
+echo -e "${GREEN}Found UDID: $UDID${NC}"
 
-# Check if Java is installed
-if ! command -v java >/dev/null 2>&1; then
-  echo "Java is not installed. Installing OpenJDK..."
-  brew install openjdk
-  sudo ln -sfn /opt/homebrew/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk
-  # shellcheck disable=SC2016
-  echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"' >> ~/.zshrc
-  # shellcheck disable=SC1090
-  source ~/.zshrc
-  set_java_home
-else
-  CURRENT_VERSION=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}')
-  echo "🔍 Java is already installed. Version: $CURRENT_VERSION"
+echo -e "${GREEN}[9/10] Booting simulator $SIM_NAME...${NC}"
+xcrun simctl boot "$UDID" || echo "(Simulator might already be booted)"
+echo -e "${GREEN}Simulator booted${NC}"
 
-  if version_ge "$CURRENT_VERSION" "$JAVA_VERSION"; then
-    echo "✅ Java version is >= $JAVA_VERSION. No need to update."
-  else
-    echo "⚠️ Java version is less than $JAVA_VERSION. Upgrading..."
-    brew upgrade openjdk
-    set_java_home
-  fi
-fi
+echo -e "${GREEN}[10/10] Building WebDriverAgent on simulator...${NC}"
+cd ~/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent
 
+LOG_FILE="wda_build.log"
+rm -f "$LOG_FILE"
 
-#echo "Installing Appium..."
-#npm install -g appium
-#
-#echo "Installing Appium XCUI Test Driver..."
-#appium driver install xcuitest
-#
-#echo "Installing Carthage..."
-#brew install carthage
-#
-#echo -e "${GREEN}Carthage installed${NC}"
-#
-#echo "Starting Appium server in background..."
-#nohup nohup appium -a 0.0.0.0 -p 4723 -pa /wd/hub --relaxed-security> appium_log.txt 2>&1 &
-#sleep 5
-#
-#echo -e "${GREEN}Appium started${NC}"
-#
-#echo "Find simulator for '$SIM_NAME' with iOS $IOS_VERSION..."
-#UDID=$(xcrun simctl list devices | sed -n "/^-- iOS $IOS_VERSION --/,/^$/p" | grep -i "$SIM_NAME (" | grep -oE '[A-Fa-f0-9-]{36}' | head -n 1)
-#echo -e "${GREEN}UDID: $UDID${NC}"
-#
-#echo "Booting simulator $SIM_NAME..."
-#xcrun simctl boot "$UDID" || echo "(Simulator may already be booted)"
-#
-#echo "Installing WebDriverAgent on simulator..."
-#cd ~/.appium/node_modules/appium-xcuitest-driver/node_modules/appium-webdriveragent
-#
-#LOG_FILE="wda_build.log"
-#rm -f "$LOG_FILE"
-#
-#xcodebuild -project WebDriverAgent.xcodeproj \
-#  -scheme WebDriverAgentRunner \
-#  -destination "platform=iOS Simulator,id=$UDID" \
-#  DEVELOPMENT_TEAM="" \
-#  CODE_SIGN_IDENTITY="" \
-#  CODE_SIGNING_REQUIRED=NO \
-#  CODE_SIGNING_ALLOWED=NO \
-#  test > "$LOG_FILE" 2>&1 &
-#
-#echo "Waiting for WebDriverAgent build to finish..."
-#
-#while ! grep -q "ServerURLHere->http://" "$LOG_FILE"; do
-#  sleep 10
-#  echo "Waiting for WebDriverAgent build to finish..."
-#done
-#
-#echo "${GREEN} Build appears to be finished${NC}"
-#tail -n 20 "$LOG_FILE"
+xcodebuild -project WebDriverAgent.xcodeproj \
+  -scheme WebDriverAgentRunner \
+  -destination "platform=iOS Simulator,id=$UDID" \
+  DEVELOPMENT_TEAM="" \
+  CODE_SIGN_IDENTITY="" \
+  CODE_SIGNING_REQUIRED=NO \
+  CODE_SIGNING_ALLOWED=NO \
+  test > "$LOG_FILE" 2>&1 &
+
+echo -e "${GREEN}⏳ Waiting for WebDriverAgent to finish building...${NC}"
+
+while ! grep -q "ServerURLHere->http://" "$LOG_FILE"; do
+  sleep 10
+  echo -e "${GREEN}⏳ Still building WebDriverAgent...${NC}"
+done
+
+echo -e "${GREEN}WebDriverAgent build completed${NC}"
+tail -n 20 "$LOG_FILE"
