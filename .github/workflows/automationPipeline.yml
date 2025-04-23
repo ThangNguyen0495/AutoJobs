@@ -13,11 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check bash scripts
-        run: |
-          chmod +x ./automated_ios_test_setup.sh
-          ./automated_ios_test_setup.sh "iPhone 15" 17.5
-        continue-on-error: true
+      # - name: Check bash scripts
+      #   run: |
+      #     chmod +x ./automated_ios_test_setup.sh
+      #     ./automated_ios_test_setup.sh "iPhone 15" 17.5
+      #   continue-on-error: true
 
       - name: Setup tmate session
         run: |
