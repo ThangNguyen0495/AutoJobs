@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Setup tmate session
         run: |
-          nohup bash -c '
+          nohup bash <<'EOF'
             tmate -S /tmp/tmate.sock new-session -d
             tmate -S /tmp/tmate.sock wait tmate-ready
             echo "✅ SSH connection string:"
@@ -21,7 +21,8 @@ jobs:
             tmate -S /tmp/tmate.sock display -p "#{tmate_web}"
             echo "🕒 Session is active. Leave this running until you're done debugging."
             while true; do sleep 30; done
-          ' > /tmp/tmate.log 2>&1 &
+          EOF
+          > /tmp/tmate.log 2>&1 &
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -31,3 +32,4 @@ jobs:
           chmod +x ./start_appium_env.sh
           ./start_appium_env.sh
         continue-on-error: true
+
