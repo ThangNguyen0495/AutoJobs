@@ -72,7 +72,7 @@ set_java_home() {
 
 # Check if Java is installed
 if ! command -v java >/dev/null 2>&1; then
-  echo "📦 Java is not installed. Installing OpenJDK..."
+  echo "Java is not installed. Installing OpenJDK..."
   brew install openjdk
   sudo ln -sfn /opt/homebrew/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk
   # shellcheck disable=SC2016
