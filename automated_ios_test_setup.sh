@@ -37,7 +37,7 @@ appium driver install xcuitest
 echo -e "${GREEN}XCUITest driver installed${NC}"
 
 echo -e "${RED_BOLD}[6/10] Installing Carthage...${NC}"
-brew install carthage
+brew reinstall carthage
 echo -e "${GREEN}Carthage installed${NC}"
 
 echo -e "${RED_BOLD}[7/10] Starting Appium server in background...${NC}"
