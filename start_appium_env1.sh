@@ -23,13 +23,14 @@ fi
 echo "[2/10] Install Nodejs"
 # Function to compare versions
 # Returns 0 (true) if $1 >= $2
-function version_ge() {
-  [ "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1" ]
+version_ge() {
+  # Compare two versions and return true if the first is greater than or equal to the second
+  [ "$(echo -e "$1\n$2" | sort -V | head -n 1)" == "$2" ]
 }
 
-# Check if Node.js is installed
-if ! command -v node >/dev/null 2>&1; then
-  echo "Node.js is not installed. Installing..."
+# Check if Node.js is installed by Homebrew
+if ! brew list node >/dev/null 2>&1; then
+  echo "Node.js is not installed via Homebrew. Installing..."
   brew install node
 else
   CURRENT_VERSION=$(node -v | sed 's/v//')
