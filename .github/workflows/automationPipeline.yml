@@ -13,14 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Check bash scripts
-        run: |
-          echo 'JAVA_HOME=$HOME/.sdkman/candidates/java/22-open' >> $GITHUB_ENV
-          echo 'PATH=$HOME/.sdkman/candidates/java/22-open/bin:$PATH' >> $GITHUB_ENV
-
-#          chmod +x ./automated_ios_test_setup.sh
-#          ./automated_ios_test_setup.sh "iPhone 15" 17.5
-#        continue-on-error: true
 
       - name: Setup tmate session
         run: |
@@ -38,6 +30,9 @@ jobs:
           tmate -S /tmp/tmate.sock display -p '#{tmate_web}'
           
           echo "🕒 Session is active. Leave this running until you're done debugging."
+          
+          echo 'JAVA_HOME=$HOME/.sdkman/candidates/java/22-open' >> $GITHUB_ENV
+          echo 'PATH=$HOME/.sdkman/candidates/java/22-open/bin:$PATH' >> $GITHUB_ENV
           
           # Keep session alive and check if the session is still running
           while true; do
