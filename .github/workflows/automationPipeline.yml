@@ -1,257 +1,38 @@
-name: Pipeline
+name: Start Selenium Grid
 
 on:
-  push:
-    branches:
-      - main
-  schedule:
-    - cron: '0 17 * * *'
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  workflow_dispatch:
 
 jobs:
-  Get-SourceCode:
-    uses: SMTG-04/Reusable/.github/workflows/cloneGitConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-    secrets:
-      VPN_USERNAME: ${{ secrets.VPN_USERNAME }}
-      VPN_PASSWORD: ${{ secrets.VPN_PASSWORD }}
-      GIT_REPO: ${{ secrets.GIT_REPO }}
-  Web:
-    needs: Get-SourceCode
-    runs-on: ubuntu-latest
+  start-grid:
+    runs-on: [self-hosted, selenium-cloud]
+
     steps:
-      - run: echo "Check web feature"
+      - name: Pull Selenium Grid images
+        run: |
+          docker pull selenium/hub:4.25.0
+          docker pull selenium/node-chrome:4.25.0
 
-  Dashboard:
-    needs: Web
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Verify dashboard feature"
+      - name: Start Selenium Grid
+        run: |
+          docker network create grid || true
+          docker run -d -p 4442-4444:4442-4444 --net grid --name selenium-hub selenium/hub:4.25.0
+          docker run -d --net grid -e SE_EVENT_BUS_HOST=selenium-hub \
+            -e SE_EVENT_BUS_PUBLISH_PORT=4442 -e SE_EVENT_BUS_SUBSCRIBE_PORT=4443 \
+            --shm-size="2g" selenium/node-chrome:4.25.0
 
-  StoreFront:
-    needs: Web
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Verify storefront feature"
+      - name: Log Grid URL
+        run: |
+          # Get public IP (if VM has internet)
+          PUBLIC_IP=$(curl -s ifconfig.me || echo "localhost")
+          
+          echo ""
+          echo "✅ Selenium Grid Hub is up and running!"
+          echo "-----------------------------------------"
+          echo "Hub Console URL:  http://$PUBLIC_IP:4444/ui"
+          echo "Hub Endpoint:     http://$PUBLIC_IP:4444/wd/hub"
+          echo "-----------------------------------------"
+          echo ""
 
-  App:
-    needs: Get-SourceCode
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Check app feature"
-
-  Android-GoSELLER:
-    needs: App
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Check Android GoSELLER app"
-
-  Android-GoBUYER:
-    needs: App
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Check Android GoBUYER app"
-
-  iOS-GoSELLER:
-    needs: App
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Check iOS GoSELLER app"
-
-  iOS-GoBUYER:
-    needs: App
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Check iOS GoBUYER app"
-
-  Dashboard-CreateProduct:
-    needs: Dashboard
-    uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      test_name: "Dashboard-CreateProduct"
-      test_config: "test_config/web/createProductTest.xml"
-      branch_name: "GoSELL-Thang"
-
-  Dashboard-UpdateProduct:
-    needs: Dashboard
-    uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      test_name: "Dashboard-UpdateProduct"
-      test_config: "test_config/web/updateProductTest.xml"
-      branch_name: "GoSELL-Thang"
-
-  Dashboard-ProductManagement:
-    needs:
-      - Dashboard-CreateProduct
-      - Dashboard-UpdateProduct
-
-    if: always()
-    uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      test_name: "Dashboard-ProductManagement"
-      test_config: "test_config/web/productManagementTest.xml"
-      branch_name: "GoSELL-Thang"
-
-  Storefront-ProductDetail-NormalxWithoutVariation:
-    needs: StoreFront
-    uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      test_name: "Storefront-ProductDetail-NormalxWithoutVariation"
-      test_config: "test_config/web/productDetail_Normal_withoutVariation.xml"
-      branch_name: "GoSELL-Thang"
-
-  Storefront-ProductDetail-IMEIxWithoutVariation:
-    needs: StoreFront
-    uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      test_name: "Storefront-ProductDetail-IMEIxWithoutVariation"
-      test_config: "test_config/web/productDetail_IMEI_withoutVariation.xml"
-      branch_name: "GoSELL-Thang"
-
-  Storefront-ProductDetail-NormalxVariation:
-    needs: StoreFront
-    uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      test_name: "Storefront-ProductDetail-NormalxVariation"
-      test_config: "test_config/web/productDetail_Normal_Variation.xml"
-      branch_name: "GoSELL-Thang"
-
-  Storefront-ProductDetail-IMEIxVariation:
-    needs: StoreFront
-    uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      test_name: "Storefront-ProductDetail-IMEIxVariation"
-      test_config: "test_config/web/productDetail_IMEI_Variation.xml"
-      branch_name: "GoSELL-Thang"
-
-  Storefront-ProductDetail-Promotion:
-    needs:
-      - Storefront-ProductDetail-NormalxWithoutVariation
-      - Storefront-ProductDetail-IMEIxWithoutVariation
-      - Storefront-ProductDetail-NormalxVariation
-      - Storefront-ProductDetail-IMEIxVariation
-
-    if: always()
-    uses: SMTG-04/Reusable/.github/workflows/seleniumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      test_name: "Storefront-ProductDetail-Promotion"
-      test_config: "test_config/web/productDetail_combinePromotion.xml"
-      branch_name: "GoSELL-Thang"
-
-  Android-GoSELLER-CreateProduct:
-    needs: Android-GoSELLER
-    uses: SMTG-04/Reusable/.github/workflows/androidAppiumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      appium_port: "4723"
-      test_name: "Android-GoSELLER-CreateProduct"
-      test_config: "test_config/android/seller/createProductTest.xml"
-      branch_name: "GoSELL-Thang"
-
-  Android-GoSELLER-UpdateProduct:
-    needs: Android-GoSELLER
-    uses: SMTG-04/Reusable/.github/workflows/androidAppiumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      appium_port: "4723"
-      test_name: "Android-GoSELLER-UpdateProduct"
-      test_config: "test_config/android/seller/editProductTest.xml"
-      branch_name: "GoSELL-Thang"
-
-  Android-GoSELLER-ProductManagement:
-    needs:
-      - Android-GoSELLER-CreateProduct
-      - Android-GoSELLER-UpdateProduct
-    if: always()
-    uses: SMTG-04/Reusable/.github/workflows/androidAppiumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      appium_port: "4723"
-      test_name: "Android-GoSELLER-ProductManagement"
-      test_config: "test_config/android/seller/productManagementTest.xml"
-      branch_name: "GoSELL-Thang"
-
-  Android-GoBUYER-ProductDetail:
-    needs: Android-GoBUYER
-    uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      appium_port: "4723"
-      test_name: "IOS-GoSELLER-ProductManagement"
-      test_config: "test_config/android/buyer/productDetail.xml"
-      branch_name: "GoSELL-Thang"
-
-  IOS-GoSELLER-CreateProduct:
-    needs: iOS-GoSELLER
-    uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      appium_port: "4723"
-      test_name: "IOS-GoSELLER-CreateProduct"
-      test_config: "test_config/iOS/seller/createProductTest.xml"
-      branch_name: "GoSELL-Thang"
-
-  IOS-GoSELLER-UpdateProduct:
-    needs: iOS-GoSELLER
-    if: always()
-    uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      appium_port: "4723"
-      test_name: "IOS-GoSELLER-UpdateProduct"
-      test_config: "test_config/iOS/seller/editProductTest.xml"
-      branch_name: "GoSELL-Thang"
-
-  IOS-GoSELLER-ProductManagement:
-    needs:
-      - IOS-GoSELLER-CreateProduct
-      - IOS-GoSELLER-UpdateProduct
-    if: always()
-    uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      appium_port: "4723"
-      test_name: "IOS-GoSELLER-ProductManagement"
-      test_config: "test_config/iOS/seller/productManagementTest.xml"
-      branch_name: "GoSELL-Thang"
-
-  IOS-GoBUYER-ProductDetail:
-    needs: iOS-GoBUYER
-    uses: SMTG-04/Reusable/.github/workflows/iosAppiumConfigs.yml@main
-    with:
-      artifact: "ClonedRepo"
-      appium_port: "4723"
-      test_name: "IOS-GoSELLER-ProductManagement"
-      test_config: "test_config/iOS/buyer/productDetail.xml"
-      branch_name: "GoSELL-Thang"
-
-
-  CleanJob:
-    runs-on: ubuntu-20.04
-    needs:
-      - Dashboard-ProductManagement
-      - Storefront-ProductDetail-Promotion
-      - Android-GoSELLER-ProductManagement
-      - Android-GoBUYER-ProductDetail
-      - IOS-GoSELLER-ProductManagement
-      - IOS-GoBUYER-ProductDetail
-
-    if: always()
-    steps:
-      - name: Delete clone repository
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: ClonedRepo
-
+          # Optional: check health
+          curl -s http://localhost:4444/status | jq '.value.ready' || true
