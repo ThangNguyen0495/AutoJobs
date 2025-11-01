@@ -43,3 +43,5 @@ jobs:
           echo "Hub Endpoint:     http://$PUBLIC_IP:4444/wd/hub"
           echo "-----------------------------------------"
           echo ""
+          echo "Job will stay open for 30 minutes..."
+          sleep 1800
