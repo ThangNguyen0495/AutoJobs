@@ -1,47 +1,53 @@
-name: Run Selenium Tests with GitHub Runner Grid
+name: Selenium Grid Remote Execution
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
 
 jobs:
-  selenium-tests:
+  selenium-grid-test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Java
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '22'
           distribution: 'temurin'
+          java-version: '22'
 
-      - name: Install Docker Compose
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y docker-compose
+          sudo apt-get install -y wget unzip xvfb
 
-      - name: Start Selenium Grid
+      - name: Download Selenium Server
         run: |
-          docker network create grid || true
-          docker run -d -p 4442-4444:4442-4444 --net grid --name selenium-hub selenium/hub:4.25.0
-          docker run -d --net grid -e SE_EVENT_BUS_HOST=selenium-hub \
-            -e SE_EVENT_BUS_PUBLISH_PORT=4442 -e SE_EVENT_BUS_SUBSCRIBE_PORT=4443 \
-            --shm-size="2g" selenium/node-chrome:4.25.0
+          SELENIUM_VERSION=4.25.0
+          wget -q https://github.com/SeleniumHQ/selenium/releases/download/selenium-${SELENIUM_VERSION}/selenium-server-${SELENIUM_VERSION}.jar
 
-          echo "Waiting for Selenium Grid to be ready..."
-          # Get public IP (if VM has internet)
-          PUBLIC_IP=$(curl -s ifconfig.me || echo "localhost")
-          
-          echo ""
-          echo "✅ Selenium Grid Hub is up and running!"
-          echo "-----------------------------------------"
-          echo "Hub Console URL:  http://$PUBLIC_IP:4444/ui"
-          echo "Hub Endpoint:     http://$PUBLIC_IP:4444/wd/hub"
-          echo "-----------------------------------------"
-          echo ""
-          echo "Job will stay open for 30 minutes..."
-          sleep 1800
+      - name: Start Selenium Grid (standalone)
+        run: |
+          nohup java -jar selenium-server-4.25.0.jar standalone --host 0.0.0.0 --port 4444 > grid.log 2>&1 &
+          sleep 10
+          echo "===== Selenium Grid is running at ====="
+          echo "http://localhost:4444/ui"
+          echo "======================================="
+          curl -s http://localhost:4444/status || echo "⚠️ Grid may not be fully ready yet"
+
+      - name: Verify Grid Logs
+        run: tail -n 30 grid.log
+
+      - name: Run Selenium Tests
+        env:
+          GRID_URL: http://localhost:4444/wd/hub
+        run: |
+          echo "Running tests against $GRID_URL ..."
+          mvn test -Dselenium.grid.url=$GRID_URL
+
+      - name: Keep Runner Alive for Debugging (optional)
+        if: always()
+        run: |
+          echo "Keeping container alive for 5 minutes..."
+          sleep 300
