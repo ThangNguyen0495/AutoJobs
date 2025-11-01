@@ -1,17 +1,28 @@
-name: Start Selenium Grid
+name: Run Selenium Tests with GitHub Runner Grid
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ main ]
 
 jobs:
-  start-grid:
-    runs-on: [self-hosted, selenium-cloud]
+  selenium-tests:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Pull Selenium Grid images
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '22'
+          distribution: 'temurin'
+
+      - name: Install Docker Compose
         run: |
-          docker pull selenium/hub:4.25.0
-          docker pull selenium/node-chrome:4.25.0
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
 
       - name: Start Selenium Grid
         run: |
@@ -21,8 +32,7 @@ jobs:
             -e SE_EVENT_BUS_PUBLISH_PORT=4442 -e SE_EVENT_BUS_SUBSCRIBE_PORT=4443 \
             --shm-size="2g" selenium/node-chrome:4.25.0
 
-      - name: Log Grid URL
-        run: |
+          echo "Waiting for Selenium Grid to be ready..."
           # Get public IP (if VM has internet)
           PUBLIC_IP=$(curl -s ifconfig.me || echo "localhost")
           
@@ -33,6 +43,3 @@ jobs:
           echo "Hub Endpoint:     http://$PUBLIC_IP:4444/wd/hub"
           echo "-----------------------------------------"
           echo ""
-
-          # Optional: check health
-          curl -s http://localhost:4444/status | jq '.value.ready' || true
